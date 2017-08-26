@@ -1,0 +1,32 @@
+add addit
+art artist artwork
+attend
+audio audioguid
+barca barcelona? bcn
+build built
+catalonia catalunya
+chao chaotic
+comment commentari
+creation creative?
+"dali",0.76764369894176,66
+"dal�",0.102331403757276,1 Acento?
+drive drove
+easi easili
+end endless?
+eur euro?
+event eventu?
+explain explan
+famili familiar
+hall hallway
+hand handicap
+hour hrs
+info inform
+jewel jewelleri jewelri
+larg large
+love lover
+mass massive
+photo photograph
+spend spent
+theater threatr
+tour touristic
+visit visitor??
