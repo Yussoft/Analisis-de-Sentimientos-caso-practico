@@ -216,6 +216,99 @@ searchAdjNoun<- function(text, adj, nouns){
   return(unique(unlist(candidates)))
 }
 
+getPosSep<-function(char){
+  return(str_locate_all(pattern ='-', char)[[1]][[1]])
+}
+
+getTag<-function(char,pos){
+  return(substr(char,pos+1,nchar(char)))
+}
+
+getWord<-function(char,pos){
+  return(substr(char,1,pos-1))
+}
+searchAdjectives<- function(text, nouns){
+  
+  # Adjective list
+  adj <- list()
+  end_loop <- FALSE
+  for(i in 1:length(text)){
+    
+    elem <- text[[i]]
+    pos<- getPosSep(elem)
+    tag<- getTag(elem,pos)
+    
+    # If the word is a noun
+    if(tag == "NN" | tag == "NNS" | tag == "NNP"){
+      noun<-getWord(elem,pos)
+      
+      # If the noun is in the list of interesting nouns
+      if(noun%in%nouns){  
+        print(paste0("Nombre: ",noun))
+        
+        k <- 1
+        end_loop <- FALSE
+        # Check for adjectives before noun
+        while(end_loop == FALSE){
+          # Get previous tag and check
+          if(i-k > 1){
+            
+            elem_n <- text[[i-k]]
+            pos <- getPosSep(elem_n)
+            size <- nchar(elem_n)
+            new_tag <- getTag(elem_n,pos)
+            new_word <- getWord(elem_n,pos)
+            
+            if(isStopWord(new_word) | new_tag == "IN"){
+              k<-k+1
+            } else if(new_tag == "JJ" | new_tag == "JJS" | new_tag == "JJR"){
+              
+              # Add the new adjective to the list
+              adj[[length(adj)+1]]<- new_word
+              end_loop <- TRUE
+            } else {
+              end_loop <- TRUE
+            }
+          }
+          else {
+            end_loop <- TRUE
+          }
+        }
+        k <- 1
+        end_loop <- FALSE
+        # Check for adjectives before noun
+        while(end_loop == FALSE){
+          # Get previous tag and check
+          if(i+k <= length(text)){
+            elem_n <- text[[i+k]]
+            pos <- getPosSep(elem_n)
+            size <- nchar(elem_n)
+            new_tag <- getTag(elem_n,pos)
+            new_word <- getWord(elem_n,pos)
+            
+            if(isStopWord(new_word) | new_tag == "IN"){
+              k<-k+1
+            }
+            else if(new_tag == "JJ" | new_tag == "JJS" | new_tag == "JJR"){
+              
+              # Add the new adjective to the list
+              adj[[length(adj)+1]]<- new_word
+              end_loop <- TRUE
+            }
+            else {
+              end_loop <- TRUE
+            }
+          }
+          else {
+            end_loop <- TRUE
+          }
+        }
+      }
+    }
+  } # End for 
+  return(adj)
+}
+
 
 isStopWord <- function(word){
   
