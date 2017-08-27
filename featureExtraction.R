@@ -143,7 +143,10 @@ extractPOS <- function(x, POS.tag = "F") {
   return(result)
 }
 
-WFNoStemming <- function(document.vector,sparsity=0.999){
+
+
+
+WFNoStemming <- function(document.vector,sparsity=0.999, mode=1){
   # Computes the frequency of each word in a document
   #
   # Args:
@@ -156,12 +159,20 @@ WFNoStemming <- function(document.vector,sparsity=0.999){
   temp.corpus <- Corpus(VectorSource(document.vector))
   
   # Construct term-frequency matrix and remove sparse terms
+  if(mode==1){
+    temp.tf <- DocumentTermMatrix(temp.corpus,
+                                  control = list(stopwords = stopwords("SMART"),
+                                                 removePunctuation = TRUE,
+                                                 removeNumbers = TRUE))
+  }
+  else if(mode==2){
+    temp.tf <- DocumentTermMatrix(temp.corpus,
+                                  control = list(stopwords = stopwords("SMART"),
+                                                 removePunctuation = TRUE,
+                                                 removeNumbers = TRUE,
+                                                 weighting = function(x) weightTfIdf(x, normalize = FALSE)))
+  }
   
-  temp.tf <- DocumentTermMatrix(temp.corpus,
-                                control = list(stopwords = stopwords("SMART"),
-                                               removePunctuation = TRUE,
-                                               removeNumbers = TRUE,
-                                               weighting = function(x) weightTfIdf(x, normalize = FALSE)))
   
   temp.tf <- removeSparseTerms(temp.tf, sparsity)
   temp.tf <- as.matrix(temp.tf)
@@ -172,48 +183,6 @@ WFNoStemming <- function(document.vector,sparsity=0.999){
   freq.df <- data.frame(word = names(freq.df), freq = freq.df)
   rownames(freq.df) <- NULL
   return(freq.df)
-}
-
-
-searchAdjNoun<- function(text, adj, nouns){
-  
-  candidates <- list()
-  # This function searches adj-noun
-  for(i in 1:length(adj)){
-    
-    # This sentence extract word+adj+word where adj belongs to the candidate
-    # adjective list
-    
-    cad <- str_extract(text,paste0("\\w+\\s+",adj[i],"\\s+\\w+"))
-    
-    # POS tag the word+adj+word in order to know if the words are nouns
-    tags <- extractPOS(cad)
-    
-    for(j in 1:length(tags)){
-      
-      #If there is a noun before the adjective
-      w <- tags[1]
-      pos <- getPosSep(w)
-      tag <- substr(w,pos+1,nchar(w))
-      
-      # Case 1: adj+noun
-      if(tag == "NN" | tag == "NNS" | tag == "NNP"){
-        candidates[[length(candidates)+1]]<-substr(w,1,pos-1)
-      }
-      
-      #If there is a noun after the adjective
-      w <- tags[3]
-      pos <- getPosSep(w)
-      tag <- substr(w,pos+1,nchar(w))
-      
-      # Case 1: adj+noun
-      if(tag == "NN" | tag == "NNS" | tag == "NNP"){
-        candidates[[length(candidates)+1]]<-substr(w,1,pos-1)
-      }
-    }
-  }
-  
-  return(unique(unlist(candidates)))
 }
 
 getPosSep<-function(char){
@@ -309,6 +278,87 @@ searchAdjectives<- function(text, nouns){
   return(adj)
 }
 
+searchNouns<- function(text, adjectives){
+  
+  # Adjective list
+  candidates <- list()
+  end_loop <- FALSE
+  for(i in 1:length(text)){
+    
+    elem <- text[[i]]
+    pos<- getPosSep(elem)
+    tag<- getTag(elem,pos)
+    
+    # If the word is an adjective
+    if(tag == "JJ" | tag == "JJS" | tag == "JJR"){
+      adj<-getWord(elem,pos)
+      
+      # If the noun is in the list of interesting nouns
+      if(adj%in%adjectives){  
+        #print(paste0("Adjetivo: ",adj))
+        
+        k <- 1
+        end_loop <- FALSE
+        # Check for adjectives before noun
+        while(end_loop == FALSE){
+          # Get previous tag and check
+          if(i-k > 1){
+            
+            elem_n <- text[[i-k]]
+            pos <- getPosSep(elem_n)
+            size <- nchar(elem_n)
+            new_tag <- getTag(elem_n,pos)
+            new_word <- getWord(elem_n,pos)
+            
+            if(isStopWord(new_word) | new_tag == "IN"){
+              k<-k+1
+            } else if(new_tag == "NN" | new_tag == "NNS" | new_tag == "NNP"){
+              
+              # Add the new adjective to the list
+              candidates[[length(candidates)+1]]<- new_word
+              end_loop <- TRUE
+            } else {
+              end_loop <- TRUE
+            }
+          }
+          else {
+            end_loop <- TRUE
+          }
+        }
+        k <- 1
+        end_loop <- FALSE
+        # Check for adjectives before noun
+        while(end_loop == FALSE){
+          # Get previous tag and check
+          if(i+k <= length(text)){
+            elem_n <- text[[i+k]]
+            pos <- getPosSep(elem_n)
+            size <- nchar(elem_n)
+            new_tag <- getTag(elem_n,pos)
+            new_word <- getWord(elem_n,pos)
+            
+            if(isStopWord(new_word) | new_tag == "IN"){
+              k<-k+1
+            }
+            else if(new_tag == "NN" | new_tag == "NNS" | new_tag == "NNP"){
+              
+              # Add the new adjective to the list
+              candidates[[length(candidates)+1]]<- new_word
+              end_loop <- TRUE
+            }
+            else {
+              end_loop <- TRUE
+            }
+          }
+          else {
+            end_loop <- TRUE
+          }
+        }
+      }
+    }
+  } # End for 
+  return(unique(unlist(candidates)))
+}
 
 isStopWord <- function(word){
   

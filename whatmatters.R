@@ -36,7 +36,7 @@ df.opinions <- df.opinions[1:20]
 rm(df)
 
 # Compute tfidf and order words
-df.freq <- WFNoStemming(df.opinions)
+df.freq <- WFNoStemming(df.opinions,sparsity = .999,mode=1)
 df.freq <- df.freq[order(df.freq$freq, decreasing = TRUE),]
 
 
@@ -94,38 +94,39 @@ text <- removeNumbers(text)
 # s.tag is a list of lists of tagged words 
 s.tag <- lapply(text,extractPOS)
 
-
 # Once the text has being processed, searchAdjectives looks for adjectives
 # directly before or after a name, and returns a list.
 top3.percent.nouns$word <- as.character(top3.percent.nouns$word)
 adj.candidates<- unlist(sapply(s.tag,searchAdjectives, top3.percent.nouns$word))
 
-# Remove repeted adjectives
-adj.candidates <- unique(adj.candidates)
+# 2.2: find the adjectives from step 2.1 in the text and find new nouns
+# inmediately before or after the name
 
-# # 2.2: find the adjectives from step 2.1 in the text and find new nouns
-# # inmediately before or after the name
-# 
-# # In order to find nouns and adjectives easier the stopwords are removed
-# text <- rmSW(text)
-# 
 # # SearchAdjNoun will add the new nouns to the top3 nouns list
-# candidates <- searchAdjNoun(text,adj.candidates,top3.percent.nouns)
-# 
-# nouns <- unique(c(top3.percent.nouns$word,candidates))
-# 
-# 
-# #------------------THIRD PART: MAPPING FEATURE INDICATORS----------------------#
-# 
-# # Feature Indicator candidates
-# # fic <- unlist(lapply(df.opinions,extractPOS,"JJ"))
-# # fic <- tolower(fic)
-# # fic <- unique(fic)
-# # fic <- sort(fic)
-# # write(x = fic,file = "ficDali")
-# 
+
+noun.candidates <- unlist(sapply(s.tag,searchNouns,adj.candidates))
+nouns <- unique(c(top3.percent.nouns$word,noun.candidates))
+
+#------------------THIRD PART: MAPPING FEATURE INDICATORS----------------------#
+
+# Feature Indicator candidates
+# fic <- unlist(lapply(df.opinions,extractPOS,"JJ"))
+# fic <- tolower(fic)
+# fic <- unique(fic)
+# fic <- sort(fic)
+# write(x = fsc,file = "ficDali")
+
 # fic <- list("cheap","expensive","crowded","overcrowded","price","spent","overpriced",
 #             "handicap","impolite","waiting","expense")
-# 
-# #------------------------------------------------------------------------------#
-# 
+fic<-list("expensive","noisy","early","packed","quickly")
+
+#------------------------------------------------------------------------------#
+
+tfidf.words <- WFNoStemming(df.opinions,mode=2,sparsity = .999)
+tfidf.words <- as.data.table(tfidf.words)
+tfidf.words <- tfidf.words[order(freq, decreasing = TRUE),]
+# Add as features the top 10% higher TFIDF
+# tfidf.nouns <- tfidf.nouns[order(tfidf.nouns$freq),]
+
+beep(2)
+
