@@ -20,6 +20,9 @@ require(textreuse)
 
 options(mc.cores=4)
 
+BigramTokenizer <- function(x) unlist(lapply(ngrams(words(x), 2), paste, collapse = " "), 
+                                      use.names = FALSE)
+
 WordFrequency <- function(document.vector, sparsity = .999, mode){
   # Computes the frequency of each word in a document
   #
@@ -30,11 +33,8 @@ WordFrequency <- function(document.vector, sparsity = .999, mode){
   #   term-frequency dataframe
   
   # Construct the corpus
-  #temp.corpus <- Corpus(VectorSource(document.vector))
-  temp.corpus <- VectorSource(document.vector)
+  temp.corpus <- Corpus(VectorSource(document.vector))
   
-  temp.corpus <- Corpus(temp.corpus)
-
   # Construct term-frequency matrix and remove sparse terms
   if(mode==1){
     temp.tf <- DocumentTermMatrix(temp.corpus,
@@ -43,20 +43,20 @@ WordFrequency <- function(document.vector, sparsity = .999, mode){
                                                  removePunctuation = TRUE,
                                                  removeNumbers = TRUE))
   } else if(mode == 2){
-      temp.tf <- DocumentTermMatrix(temp.corpus,
+    temp.tf <- DocumentTermMatrix(temp.corpus,
                                   control = list(tokenize = BigramTokenizer,
                                                  stopwords = stopwords("SMART"), 
-                                                 stemming=TRUE,
+                                                 stemming=TRUE, 
                                                  removePunctuation = TRUE, 
                                                  removeNumbers = TRUE))
-  }
+    
 
+  }
   temp.tf <- removeSparseTerms(temp.tf, sparsity)
   temp.tf <- as.matrix(temp.tf)
   docTerm.df <- as.data.frame(temp.tf)
-
   # construct word frequency df
-  freq.df <- colMeans(temp.tf)
+  freq.df <- colSums(temp.tf)
   freq.df <- data.frame(word = names(freq.df), freq = freq.df)
   rownames(freq.df) <- NULL
   return(freq.df)
@@ -74,6 +74,25 @@ WordTFIDF <- function(document.vector, sparsity = .999, mode){
   # Returns:
   #   term-frequency dataframe
   
+  word.tfidf <- function(document.vector, sparsity = .999){
+    # construct corpus
+    temp.corpus <- Corpus(VectorSource(document.vector))
+    # construct tf matrix and remove sparse terms
+    temp.tf <- DocumentTermMatrix(temp.corpus,
+                                  control = list(tokenize = BigramTokenizer, 
+                                                 stopwords = stopwords("SMART"),
+                                                 stemming=TRUE, 
+                                                 removePunctuation = TRUE, 
+                                                 removeNumbers = TRUE))
+    temp.tf <- removeSparseTerms(temp.tf, sparsity)
+    temp.tf <- as.matrix(temp.tf)
+    docTerm.df <- as.data.frame(temp.tf)
+    # construct word frequency df
+    freq.df <- colMeans(temp.tf)
+    freq.df <- data.frame(word = names(freq.df), freq = freq.df)
+    rownames(freq.df) <- NULL
+    list(Freq = freq.df, Temp = docTerm.df)
+  }
   
   # Construct the corpus
   temp.corpus <- Corpus(VectorSource(document.vector))
@@ -89,18 +108,17 @@ WordTFIDF <- function(document.vector, sparsity = .999, mode){
   } else if(mode == 2){
     
     temp.tf <- DocumentTermMatrix(temp.corpus,
-                                  control = list(tokenize = BigramTokenizer,
-                                                 stopwords = stopwords("SMART"), 
+                                  control = list(tokenize = BigramTokenizer, 
+                                                 stopwords = stopwords("SMART"),
                                                  stemming=TRUE, 
                                                  removePunctuation = TRUE, 
-                                                 removeNumbers = TRUE,
-                                                 weighting = function(x) weightTfIdf(x, normalize = FALSE)))
+                                                 removeNumbers = TRUE))
+    
   }
   
   temp.tf <- removeSparseTerms(temp.tf, sparsity)
   temp.tf <- as.matrix(temp.tf)
   docTerm.df <- as.data.frame(temp.tf)
-  
   # construct word frequency df
   freq.df <- colMeans(temp.tf)
   freq.df <- data.frame(word = names(freq.df), freq = freq.df)
@@ -108,7 +126,6 @@ WordTFIDF <- function(document.vector, sparsity = .999, mode){
   list(Freq = freq.df, Temp = docTerm.df)
 }
 
-BigramTokenizer <- function(x) unlist(lapply(ngrams(words(x), 2), paste, collapse = " "), use.names = FALSE)
 extractPOS <- function(x, POS.tag = "F") {
   # This function tags a given text 
   
