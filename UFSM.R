@@ -366,7 +366,7 @@ if(dataset == 1){
   
   #beati beauti beautiful
   TripAdvisorFeatures$beautifulX <- TripAdvisorFeatures$beati + TripAdvisorFeatures$beauti +
-    TripAdvisorAndFeatures$beautiful
+    TripAdvisorFeatures$beautiful
   TripAdvisorFeatures$beautifulX <- ifelse(TripAdvisorFeatures$beautifulX > 1, 1, TripAdvisorFeatures$beautifulX)
   TripAdvisorFeatures$beati<- NULL
   TripAdvisorFeatures$beauti <- NULL
@@ -912,7 +912,7 @@ if(dataset == 1){
   TripAdvisorFeatures$basement <- NULL
   
   TripAdvisorFeatures$beautifulX <- TripAdvisorFeatures$beati + TripAdvisorFeatures$beauti +
-    TripAdvisorAndFeatures$beautiful
+    TripAdvisorFeatures$beautiful
   TripAdvisorFeatures$beautifulX <- ifelse(TripAdvisorFeatures$beautifulX > 1, 1, TripAdvisorFeatures$beautifulX)
   TripAdvisorFeatures$beati<- NULL
   TripAdvisorFeatures$beauti <- NULL
@@ -936,14 +936,12 @@ if(dataset == 1){
   TripAdvisorFeatures$blown <- NULL
   
   TripAdvisorFeatures$bookshopX <- TripAdvisorFeatures$bookshop + TripAdvisorFeatures$bookstor +
-    TripAdvisorFeatures$booklet + TripAdvisorFeatures$book
+   TripAdvisorFeatures$book
   TripAdvisorFeatures$bookshopX <- ifelse(TripAdvisorFeatures$bookshopX > 1, 1, TripAdvisorFeatures$bookshopX)
   TripAdvisorFeatures$bookshop<- NULL
   TripAdvisorFeatures$bookstor <- NULL
-  TripAdvisorFeatures$booklet <- NULL
   TripAdvisorFeatures$book<- NULL
   
-  #Café cafe
   TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$café +
     TripAdvisorFeatures$cafeteria
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
@@ -986,10 +984,10 @@ if(dataset == 1){
   TripAdvisorFeatures$choic <- NULL 
   TripAdvisorFeatures$choos <- NULL 
   
-  TripAdvisorFeatures$civilX<- TripAdvisorFeatures$civilian + TripAdvisorFeatures$civil
+  TripAdvisorFeatures$civilX<- TripAdvisorFeatures$civilis + TripAdvisorFeatures$civil
   TripAdvisorFeatures$civilX <- ifelse(TripAdvisorFeatures$civilX > 1, 1, TripAdvisorFeatures$civilX)
   TripAdvisorFeatures$civil<- NULL
-  TripAdvisorFeatures$civilian <- NULL 
+  TripAdvisorFeatures$civilis <- NULL 
   
   TripAdvisorFeatures$classicX <- TripAdvisorFeatures$classic + TripAdvisorFeatures$classi + 
     TripAdvisorFeatures$class
