@@ -58,7 +58,7 @@ initCoreNLP(libLoc ="D:\\TFG-\\stanford-corenlp-full-2015-12-09",mem="10g")
 # Nº4 : Dali: 140 pages
 # Nº5 : City of art and science: 210 pages
 
-data <- 5
+data <- 4
 
 # data frame read
 data.f <- LoadCSV(dataset = data,FALSE,"")
@@ -77,7 +77,6 @@ data.f$SentimentCore <- NA
 
 # Change $titleopinion to character (currently factor)
 if(typeof(data.f$titleopinion)=="factor"){
-  print("IT IS")
   data.f$titleopinion <- as.character(data.f$titleopinion)
 }
 
@@ -117,7 +116,7 @@ data.f$SentimentCore <- ifelse(data.f$pos > data.f$neg, "positive",
                                               "negative", "neutral"))
 # Save the new data frame into a csv file 
 # Depending on what csv you read, a different path will be used for each Data Frame
-SaveCSV(data.f,data,name= "ENGCore")
+SaveCSV(data.f,data,name= "CoreEng")
 
 beep(3)
 

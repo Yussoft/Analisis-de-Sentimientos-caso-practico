@@ -57,6 +57,10 @@ LoadCSV <- function (dataset = 5, verbose = FALSE, name = ""){
   # If no name, load the basic CSV, the data from the web
   if(name=="")
     path <- paste0(pc.path,ds.name,"/",ds.name,"ENG.csv")
+  else if(name=="UnigramFeatures")
+    path <- paste0(pc.path,ds.name,"/Unigram/",ds.name,name,".csv")
+  else if(name=="BigramFeatures")
+    path <- paste0(pc.path,ds.name,"/Bigram/",ds.name,name,".csv")
   
   # file name is: data+name+.csv e.g: pradoCORENG.csv for the data+CoreNLP
   # sentiment
@@ -91,6 +95,7 @@ SaveCSV <- function(dataframe, dataset = 4, name){
   ds.name <- getDatasetName(dataset)
   # Build the path 
   pc.path <- "D:/TFG-/Data/"
+  
   path <- paste0(pc.path,ds.name,"/",ds.name,name,".CSV")
   
   write.csv(dataframe,path,row.names = FALSE)
@@ -126,42 +131,73 @@ strDF <- function(dataset=4,name=""){
 
 #------------------------SPLITING DATA FUNCTIONS-------------------------------#
 
-splitTrainTest <- function(name, database, perc, colsdel){
-  # In this function SentimentValue refers to class label
+splitTrainTest <- function(dataset, perc, colsdel){
   
-  dataset <- LoadCSV(database,FALSE,name)
-  
+  # Two data sets are built, one with SentimentValue as class label, the second
+  # one with SentimentCore as label.
+  sentiment <- dataset
+  core <- dataset
+
   # Set SentimentCoreNLP to null, it is going to be infered by the classifier
-  dataset$SentimentCoreNLP <- NULL
-  dataset$SentimentValue <- as.factor(dataset$SentimentValue)
+  # SentimentValue is the label, core is the output
+  sentiment$SentimentCore <- NULL
+  sentiment$SentimentValue <- as.factor(sentiment$SentimentValue)
+  
+  # For the core set, change SentimentCore (label) to SentimentValue and put 
+  # SentimentCore to NULL, it is going to be infered
+  core$SentimentValue <- as.factor(core$SentimentCore)
+  core$SentimentCore <- NULL
   
   # Delete columns depending on colsdel
-  dataset <- dataset[,!(colnames(dataset) %in% colsdel)]
+  sentiment <- sentiment[,!(colnames(sentiment) %in% colsdel)]
+  core <- core[,!(colnames(core) %in% colsdel)]
   
-  sampleSize <- floor(perc * nrow(dataset))
+  sample.size.s <- floor(perc * nrow(sentiment))
+  sample.size.c <- floor(perc * nrow(core))
   
   # Set the seed to make your partition reproducible
   set.seed(210794)
   
   # Training Data set
-  trainIndex <- sample(seq_len(nrow(dataset)), size = sampleSize)
-  datasetTRAIN <- dataset[trainIndex, ]
-  IDdatasetTRAIN <- dataset$id
-  datasetTRAIN$id <- NULL
+  # Sentiment
+  train.index.s <- sample(seq_len(nrow(sentiment)), size = sample.size.s)
+  dataset.train.s <- sentiment[train.index.s, ]
+  dataset.train.id.s <- sentiment$id
+  dataset.train.s$id <- NULL
+  
+  # Core
+  train.index.c <- sample(seq_len(nrow(core)), size = sample.size.c)
+  dataset.train.c <- sentiment[train.index.c, ]
+  dataset.train.id.c <- core$id
+  dataset.train.c$id <- NULL
   
   # Test Data set (using the rest of the data not used in training)
-  datasetTEST <- dataset[-trainIndex, ]
-  IDdatasetTEST <- datasetTEST$id
-  datasetTEST$id <- NULL
+  # Sentiment
+  dataset.test.s <- sentiment[-train.index.s, ]
+  dataset.test.id.s <- dataset.test.s$id
+  dataset.test.s$id <- NULL
   
-  LABELdatasetTEST <- datasetTEST$SentimentValue
-  datasetTEST$SentimentValue <- NULL
+  # Core
+  dataset.test.c <- core[-train.index.c, ]
+  dataset.test.id.c <- dataset.test.s$i
+  dataset.test.c$id <- NULL
+  
+  # Sentiment
+  dataset.test.label.s <- dataset.test.s$SentimentValue
+  dataset.test.s$SentimentValue <- NULL
+  
+  # Core
+  dataset.test.label.c <- dataset.test.c$SentimentValue
+  dataset.test.c$SentimentValue <- NULL
   
   # Remove id cols repeted
-  datasetTEST[,1] <- NULL
-  datasetTRAIN[,1] <- NULL
+  # datasetTEST[,1] <- NULL
+  # datasetTRAIN[,1] <- NULL
   
-  result <-list(train = datasetTRAIN, test = datasetTEST,
-                labelTest = LABELdatasetTEST, idTest = IDdatasetTEST)
+  result <-list(train.s = dataset.train.s, train.c = dataset.train.c,
+                test.s = dataset.test.s, test.c = dataset.test.c, 
+                label.s = dataset.test.label.s, label.c = dataset.test.label.c,
+                id.s = dataset.test.id.s, id.c = dataset.test.id.c )
+  
   return(result)
 }

@@ -91,7 +91,7 @@ t <- table(tr.s$SentimentValue)
 IR <- floor(table(tr.s$SentimentValue)[2]/table(tr.s$SentimentValue)[1])
 
 # Desired IR values for the data
-balance <- c("30","20","10","5","1")
+balance <- c("15")
 
 for(i in 1:length(balance)){
   
@@ -103,6 +103,7 @@ for(i in 1:length(balance)){
   
   # If the dataset IR is less than the desired one
   if(as.integer(balance[i]<IR)){
+    print(paste0(balance[i]))
     
     # Calculate the indices of the negative documents
     minority.indices <- (1:dim(tr.s)[1])[tr.s$SentimentValue == "negative"]
