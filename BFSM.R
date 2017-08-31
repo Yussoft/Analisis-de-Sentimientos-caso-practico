@@ -1,13 +1,21 @@
-# Load packages
-library(tm)
-library(SnowballC)
-library(data.table)
-require(textreuse)
+  #------------------------------------------------------------------------------#
+#
+# Original Author: Ana Valdivia
+# Author: Jesús Sánchez de Castro
+# Date: August 2017
+#
+#                       BIGRAM FEATURE SELECTION METHOD 
+#
+#------------------------------------------------------------------------------#
 
+# Load packages
+
+source("featureExtraction.R")
 source("utils.R")
 
-# Remember to change working directory
-# Load data
+# Before executing the script:
+# 1.- Change working directory to where the code is
+# 2.- Choose a museum, asign the number of the museum to dataset variable
 
 # Nº1 : Prado Museum: 1230 pages
 # Nº2 : Tyssen Museum: 380 pages
@@ -15,49 +23,111 @@ source("utils.R")
 # Nº4 : Dali: 140 pages
 # Nº5 : City of art and science: 210 pages
 
+dataset <- 5
 
-TripAdvisor <- read.csv("D:/TFG-/Data/dali/daliCOREENG.csv",stringsAsFactors = FALSE)
-TripAdvisor <- TripAdvisor[-c(1,2)]
-df <- TripAdvisor$titleopinion
-BigramTokenizer <- function(x) unlist(lapply(ngrams(words(x), 2), paste, collapse = " "), 
-                                      use.names = FALSE)
+# df is the variable containing the dataframe
+df <- LoadCSV(dataset,verbose = FALSE,name = "CoreEng")
 
-word.freq <- function(document.vector, sparsity = .999){
-  # construct corpus
-  
-  temp.corpus <- Corpus(VectorSource(document.vector))
-  # construct tf matrix and remove sparse terms
-  
+#-------------------------------TERM-FREQUENCY---------------------------------#
+# Term-frequency of positive & negative reviews (BIGRAMS - mode == 2)
+tf.pos <- WordFrequency(df$titleopinion[df$SentimentValue=="positive"],
+                        sparsity = .999, mode=2)
+tf.neg <- WordFrequency(df$titleopinion[df$SentimentValue=="negative"],
+                        sparsity = .999, mode=2)
 
-  temp.tf <- DocumentTermMatrix(temp.corpus,
-                                control = list(
-                                               stopwords = stopwords("english"), 
-                                               stemming=TRUE, removePunctuation = TRUE, removeNumbers = TRUE))
-  
-  # 
-  # temp.tf <- removeSparseTerms(temp.tf, sparsity)
-  # 
-  # 
-  # temp.tf <- as.matrix(temp.tf)
-  # # # construct word frequency df
-  # freq.df <- colSums(temp.tf)
-  # freq.df <- data.frame(word = names(freq.df), freq = freq.df)
-  # rownames(freq.df) <- NULL
-  # return(freq.df)
-  return(temp.tf)
+# tf.neg/pos$row/$
+tf.pos <- as.data.table(tf.pos)
+tf.pos <- tf.pos[order(tf, decreasing = TRUE),]
+tf.neg <- as.data.table(tf.neg)
+tf.neg <- tf.neg[order(tf, decreasing = TRUE),]
+
+#-----------------------------------TFIDF--------------------------------------#
+#TFIDF of positive & negative reviews (BIGRAMS - mode == 2)
+
+tfidf.pos <- WordTFIDF(df$titleopinion[df$SentimentValue=="positive"],
+                       sparsity = .999, mode=2)$TFIDF
+tfidf.neg <- WordTFIDF(df$titleopinion[df$SentimentValue=="negative"],
+                       sparsity = .999, mode=2)$TFIDF
+
+tfidf.pos <- as.data.table(tfidf.pos)
+tfidf.pos <- tfidf.pos[order(tfidf, decreasing = TRUE),]
+tfidf.neg <- as.data.table(tfidf.neg)
+tfidf.neg <- tfidf.neg[order(tfidf, decreasing = TRUE),]
+
+#------------------------------------------------------------------------------#
+# Merge FREQ and TFIDF
+word.neg <- merge(tfidf.neg, tf.neg, by="word", all = TRUE)
+word.pos <- merge(tfidf.pos, tf.pos, by="word", all = TRUE)
+
+# Remove bigrams with stopwords
+word.neg <- word.neg[-deleteSWBigrams(word.neg),]
+word.pos <- word.pos[-deleteSWBigrams(word.pos),]
+
+# Free memmory
+# rm(tf.pos)
+# rm(tf.neg)
+# rm(tfidf.pos)
+# rm(tfidf.neg)
+
+# Order and select most 500 interesting  words
+word.neg <- word.neg[order(tfidf, decreasing = TRUE),]
+if(nrow(word.neg) < 500){
+  word.neg500 <- word.neg[1:nrow(word.neg),]
+} else {
+  word.neg500 <- word.neg[1:500,]
 }
-temp.corpus <- VCorpus(VectorSource(df))
-# construct tf matrix and remove sparse terms
 
+word.pos <- word.pos[order(tfidf, decreasing = TRUE),]
+if(nrow(word.pos) < 500){
+  word.pos500 <- word.pos[1:nrow(pos),]
+} else {
+  word.pos500 <- word.pos[1:500,]
+}
 
-temp.tf <- DocumentTermMatrix(temp.corpus,
-                              control = list(
-                                stopwords = stopwords("english"), 
-                                stemming=TRUE, removePunctuation = TRUE, removeNumbers = TRUE))
+# Change cols names
+word.neg.pos500 <- merge(word.neg500, word.pos500, by = "word", all = TRUE)
+setnames(word.neg.pos500, old=c("tfidf.x", "tf.x", "tfidf.y", "tf.y"),
+         new=c("tfidfNeg", "freqNeg", "tfidfPos", "freqPos"))
 
-#print(BigramTokenizer(TripAdvisor$titleopinion[1]))
-je <- BigramTokenizer(TripAdvisor$titleopinion[1])
-word.freq.pos <- word.freq(TripAdvisor$titleopinion[TripAdvisor$SentimentValue == "positive"])
-word.freq.neg <- word.freq(TripAdvisor$titleopinion[TripAdvisor$SentimentValue == "negative"])
-# word.freq.neutral <- word.freq(TripAdvisor$titleopinion[TripAdvisor$SentimentValue == "neutral"])
+# Top 500 bigrams
+word.neg.pos500 <- word.neg.pos500[order(tfidfNeg, decreasing = TRUE),]
+word.neg.pos500Vector <- word.neg.pos500$word
+
+word.neg.select <- word.neg[!(word.neg$word %in% word.pos$word),]
+word.pos.select <- word.pos[!(word.pos$word %in% word.neg$word),]
+word.common.pos.neg <- word.neg[(word.neg$word %in% word.pos$word),]
+
+word.neg.pos500Vector <- word.neg.pos500$word
+
+# DocumentTermMatrix for PositiveNegative opinions
+TripAdvisorPosNeg <- df[df$SentimentValue != "neutral",]
+TripAdvisorFeatures <- WordTFIDF(TripAdvisorPosNeg$titleopinion,sparsity = .999,
+                                 mode=2)$DOC
+TripAdvisorFeatures <- ifelse(TripAdvisorFeatures > 0, 1, 0)
+TripAdvisorFeatures <- TripAdvisorFeatures[, colnames(TripAdvisorFeatures) %in% as.character(word.neg.pos500Vector)]
+
+sink(paste0("./Data/",dataset,"bigramColNames.txt"))
+print(colnames(TripAdvisorFeatures))
+sink()
+
+SaveCSV(TripAdvisorFeatures,dataset,name="feat")
+SaveCSV(TripAdvisorPosNeg, dataset,name="posneg")
+
+# Preparing the final set
+TripAdvisorAndFeatures <- cbind(TripAdvisorPosNeg, TripAdvisorFeatures)
+TripAdvisorAndFeatures$pos <- NULL
+TripAdvisorAndFeatures$neg <- NULL
+
+# # Delete Neutral opinions
+TripAdvisorAndFeatures <- TripAdvisorAndFeatures[TripAdvisorAndFeatures$SentimentValue!="neutral",]
+TripAdvisorAndFeatures <- TripAdvisorAndFeatures[TripAdvisorAndFeatures$SentimentCore !="neutral",]
+
+# Complete set
+SaveCSV(dataframe = TripAdvisorAndFeatures,dataset,name = "BigramFeatures")
+
+# Not matching
+TripAdvisorAndFeatures_NOTMATCHING <- TripAdvisorAndFeatures[!(TripAdvisorAndFeatures$SentimentValue=="positive" & TripAdvisorAndFeatures$SentimentCore=="negative"),]
+TripAdvisorAndFeatures_NOTMATCHING <- TripAdvisorAndFeatures_NOTMATCHING[!(TripAdvisorAndFeatures_NOTMATCHING$SentimentValue=="negative" & TripAdvisorAndFeatures_NOTMATCHING$SentimentCore=="positive"),]
+SaveCSV(dataframe = TripAdvisorAndFeatures_NOTMATCHING,dataset,name = "BigramFeatures_NOMATCHING")
+
 beep(2)
