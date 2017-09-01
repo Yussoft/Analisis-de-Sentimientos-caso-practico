@@ -12,10 +12,13 @@ cols.del <- c("username", "location", "userop", "quote", "rating", "date",
               "reviewnospace", "page", "titleopinion")
 perc <- 0.75
 
+# Desired IR values for the data
+balance <- c(20,15,10,5,1)
+
 # n1 -> UnigramFeatures
 # n2 -> BigramFeatures
 # n3 -> WhatMatters 
-method <- 1
+method <- 2
 m <- ""
 
 if(method == 1){
@@ -49,6 +52,9 @@ ds.name <- getDatasetName(dataset)
 # Build the path 
 pc.path <- "D:/TFG-/Data/"
 
+print(paste0("Dataset: ",getDatasetName(dataset)))
+print(paste0("Method: ",getMethod(method)))
+
 # Save unbalanced sentimentValue
 if(method == 1){
   
@@ -67,6 +73,7 @@ if(method == 1){
   # TEST SETS
   write.csv(label.s,file=paste0(pc.path,ds.name,"/Unigram/SentimentValue/label_s.csv"))
   write.csv(label.c,file=paste0(pc.path,ds.name,"/Unigram/SentimentCore/label_c.csv"))
+  
   
 } else if (method == 2){
 
@@ -87,14 +94,13 @@ if(method == 1){
   write.csv(label.c,file=paste0(pc.path,ds.name,"/Bigram/SentimentCore/label_c.csv"))
 }
 
+print("Writing unbalanced data succes")
+
 t <- table(tr.s$SentimentValue)
 IR <- floor(table(tr.s$SentimentValue)[2]/table(tr.s$SentimentValue)[1])
 
-# Desired IR values for the data
-balance <- c("15")
-
 for(i in 1:length(balance)){
-  
+  print(paste0("Trying to oversample for IR=",balance[i]))
   # This process is done for 2 datasets, SentimentValue and SentimentCore
   
   #Auxiliar sets not to change the originals
@@ -102,8 +108,9 @@ for(i in 1:length(balance)){
   tr.c.aux <- tr.c
   
   # If the dataset IR is less than the desired one
-  if(as.integer(balance[i]<IR)){
-    print(paste0(balance[i]))
+  if (balance[i] < IR){
+    
+    print(paste0("Objective ",balance[i],"IR < ",IR))
     
     # Calculate the indices of the negative documents
     minority.indices <- (1:dim(tr.s)[1])[tr.s$SentimentValue == "negative"]
@@ -111,7 +118,7 @@ for(i in 1:length(balance)){
     start.length <- dim(tr.s)[1]
     
     # Set the desired IR value
-    desired.IR <- as.integer(balance[i])
+    desired.IR <- balance[i]
     
     # How many instances are going to be added
     to.add <- round((1/desired.IR)*(start.length - length(minority.indices))-length(minority.indices))
@@ -149,4 +156,6 @@ for(i in 1:length(balance)){
     }
   }
 }
+print("Writing Balanced data succes")
+
 beep(3)

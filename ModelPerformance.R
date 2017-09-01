@@ -18,9 +18,8 @@ library(RWeka)
 library(kernlab)
 library(unbalanced)
 library(doParallel)
-
 library(beepr)
-
+library(e1071)
 source("utils.R")
 
 #registerDoParallel(detectCores())
@@ -29,8 +28,10 @@ options(mc.cores = detectCores())
 
 #--------------------------------PARAMETERS------------------------------------#
 # Algorithms used
-#models <- c("xgboost","svm","c45")
-models <- c("c4.5")
+models <- c("xgboost","svm","c4.5")
+# models <- c("c4.5")
+# models <- c("xgboost")
+# models <- c("svm")
 
 # nº1 -> UnigramFeatures
 # nº2 -> BigramFeatures
@@ -48,7 +49,7 @@ class.label <- 1
 # Nº3 : Reina sofia : 340 pages
 # Nº4 : Dali: 140 pages
 # Nº5 : City of art and science: 210 pages
-dataset <- 4
+dataset <- 5
 
 # # J48 Algorithm parameters:
 # control <- trainControl(method="cv", number=5, classProbs = TRUE,
@@ -56,9 +57,11 @@ dataset <- 4
 # 
 # grid <- expand.grid(C = c(0.25) , M = 50)
 
+# IR is the value that show how unbalanced a dataset is.
 dataset.IRs <- c(81,110,18,17,110)
-#balances <- c("30","20","10","5","0")
-balances <- c("10")
+
+balances <- c(20,15,10,5,1,0)
+#balances <- c(0)
 
 ds.name <- getDatasetName(dataset)
 # Build the path 
@@ -69,7 +72,6 @@ print(paste0("Method: ",method))
 print(paste0("Class label: ",class.label))
 #------------------------------------------------------------------------------#
 # Select feature extraction method
-p <- ""
 
 #If we are using unigram feature selection method
 if(method == 1){
@@ -82,8 +84,6 @@ if(method == 1){
 #------------------------------------------------------------------------------#
 # Select class label
 
-l <- ""
-
 if(class.label==1){
   p <- paste0(p,"SentimentValue/")
   l <- "s"
@@ -94,96 +94,264 @@ if(class.label==1){
 
 #------------------------------------------------------------------------------#
 # Select feature extraction method
-    
+
+is.balanced <- FALSE
+
+# Load dataframes for prediction
+df.test <- read.csv(file = paste0(p,"ts_",l,".csv"))
+#df.test<- df.test[,-c(1,2)]
+
+print("Test set loaded.")
+df.id <- read.csv(file = paste0(p,"id_",l,".csv"))
+print("IDs loaded.")
+df.label <- read.csv(file = paste0(p,"label_",l,".csv"))
+print("Labels loaded.")
+
 # For each type of balanced set
 for(i in 1:length(balances)){
-  
+
+  df.train <- data.frame()
+  b <- balances[i]
   # if dataset.ir > desired.ir
-  if (balances[i]<dataset.IRs[dataset]){
-    pathResults <- ""
-    print(paste0("Balance set: ",balances[i]))
+  if (b<dataset.IRs[dataset]){
+    print(paste0("Balance set: ",b))
+    
     
     # If the set is not balanced
-    if(balances[i] == "0"){
+    if(b == 0){
       # Read the dataframe
-      df <- read.csv(file = paste0(p,"tr_",l,"_NOBALANCE.csv"))
+      is.balanced <- FALSE
+      df.train <- read.csv(file = paste0(p,"tr_",l,"_NOBALANCE.csv"))
+      print("Training set loaded.")
+      
     # If the set is balanced
     } else {
-      df <- read.csv(file = paste0(p,"tr_",l,"_IR_",balances[i],".csv"))
+      is.balanced <- TRUE
+      df.train <- read.csv(file = paste0(p,"tr_",l,"_IR_",as.character(b),".csv"))
+      print("Training set loaded.")
+      
     }
-    
-    df <- df[,-c(1,2)]
+    if(dataset==4){
+      df.train <- df.train[,-c(1,2)]
+    } else {
+      df.train <- df.train[,-c(1)]
+    }
     # For each algorithm
     for(j in 1:length(models)){
       print(paste0("Algorithm: ",models[j]))
-      model.result <- ""
-      
+
       # Prepare the result path depending on the model and dataset type
-      if(balances[i] == "0"){
+      if(!is.balanced){
         path.results <- paste0(pc.path,ds.name,"/results/",models[j],"_",
-                              ds.name,"_UNBALANCED.txt")
-      } else {
+                              ds.name,"_m",method,"_l",class.label,"_UNBALANCED.txt")
+      } else if (is.balanced){
         path.results <- paste0(pc.path,ds.name,"/results/",models[j],"_",
-                              ds.name,"_IR",balances[i],".txt")
+                              ds.name,"_m",method,"_l",class.label,
+                              "_IR",as.character(b),".txt")
       }
-  
-        # c45 decision tree
-      if (models[j]=="c4.5"){
-        control <- trainControl(method="cv", number=5, classProbs = TRUE,
-                                summaryFunction = twoClassSummary, 
-                                allowParallel = TRUE)
+      
+      #print(path.results)
+      #------------------------------------------------------------------------#
+      # # c45 decision tree
+      # if (models[j]=="c4.5"){
+      #   control <- trainControl(method="cv", number=5, classProbs = TRUE,
+      #                           summaryFunction = twoClassSummary,
+      #                           allowParallel = TRUE)
+      # 
+      #   grid <- expand.grid(C = c(0.25), M = c(10))
+      # 
+      #   set.seed(17)
+      #   time1 <- Sys.time()
+      #   model.result<- caret::train(SentimentValue ~ ., data = df.train,
+      #                               method="J48",
+      #                               trControl = control,
+      #                               tuneGrid = grid,
+      #                               metric="ROC")
+      #   time2 <- Sys.time()
+      # 
+      # #------------------------------------------------------------------------#
+      # #XGBOOST
+      # } else if (models[j] == "xgboost"){
+      # 
+      #   control <- trainControl(method="cv", number=5, classProbs = TRUE,
+      #                           summaryFunction = twoClassSummary,
+      #                           allowParallel = TRUE)
+      #   set.seed(17)
+      #   time1 <- Sys.time()
+      #   # xgbGrid <- expand.grid(
+      #   #   nrounds = 1,
+      #   #   eta = 0.3,
+      #   #   max_depth = 5,
+      #   #   gamma = 0,
+      #   #   colsample_bytree=1,
+      #   #   min_child_weight=1)
+      # 
+      #   xgbGrid2 <- expand.grid(
+      #     nrounds = 2,
+      #     eta = 0.3,
+      #     max_depth = 6,
+      #     gamma = 0,
+      #     colsample_bytree=1,
+      #     min_child_weight=1,
+      #     subsample=0.5)
+      # 
+      #   predictors <- df.train[,-1]
+      #   for(i in 1:ncol(predictors)){
+      #     predictors[,i] <- as.numeric(as.character(predictors[,i]))
+      #   }
+      # 
+      #   label <- df.train$SentimentValue
+      #   set.seed(17)
+      #   time1 <- Sys.time()
+      #   model.result <- caret::train(x=predictors,
+      #                                y=label,
+      #                                method="xgbTree",
+      #                                trControl=control,
+      #                                tuneGrid=xgbGrid2,
+      #                                metric="ROC")
+      #   time2 <- Sys.time()
+      # 
+      # } else if (models[j]=="svm"){
+      #   control <- trainControl(method="cv", number=5, classProbs = TRUE,
+      #                           summaryFunction = twoClassSummary,
+      #                           allowParallel = TRUE)
+      # 
+      #   grid <- expand.grid(C = c(0.75))
+      # 
+      #   set.seed(17)
+      #   time1 <- Sys.time()
+      #   model.result <- caret::train(SentimentValue ~ .,
+      #                                data=df.train,
+      #                                method="svmLinear",
+      #                                trControl=control,
+      #                                tuneGrid = grid,
+      #                                metric="ROC")
+      #   time2 <- Sys.time()
+      # #------------------------------------------------------------------------#
+      # #SVM
+      # } else if(models[j]=="svm"){
+      #   control <- trainControl(method="cv", number=5, classProbs = TRUE,
+      #                           summaryFunction = twoClassSummary,
+      #                           allowParallel = TRUE)
+      # 
+      #   grid <- expand.grid(C = c(0.75))
+      # 
+      #   set.seed(17)
+      #   time1 <- Sys.time()
+      #   model.result <- caret::train(SentimentValue ~ .,
+      #                                data = df.train,
+      #                                method = "svmLinear",
+      #                                trControl = control,
+      #                                tuneGrid = grid,
+      #                                metric = "ROC")
+      #   time2 <- Sys.time()
+      # }
+      # #------------------------------------------------------------------------#
+      # # Training results
+      # 
+      # # Start saving output into text
+      # #sink(path.results)
+      # 
+      # print(paste0("Model: ", models[j]))
+      # print(paste0("DataSet: ", ds.name))
+      # if (is.balanced){
+      #   print("Balanced: No")
+      # }else{
+      #   print(paste0("Balanced IR: ", as.character(b)))
+      # }
+      # print(paste0("Number of training instances: ", nrow(df.train)))
+      # print("Model summary: ")
+      # print(model.result)
+      # 
+      # conf.matrix <- confusionMatrix(model.result)
+      # 
+      # print("ConfusionMatrix: ")
+      # print(conf.matrix)
+      # 
+      # conf.table <- (nrow(df.train)/100)*(conf.matrix$table)
+      # # Precision: tp/(tp+fp):
+      # precision <- conf.table[2,2]/sum(conf.table[2,1:2])
+      # 
+      # # Recall: tp/(tp + fn):
+      # recall <- conf.table[2,2]/sum(conf.table[1:2,2])
+      # 
+      # # F-Score: 2 * precision * recall /(precision + recall):
+      # fscore <- 2 * precision * recall /(precision + recall)
+      # 
+      # # G-measure: sqrt(precision*recall)
+      # gmeasure <- sqrt(precision * recall)
+      # 
+      # print(paste0("FscoreTRAIN: ", fscore))
+      # print(paste0("GmeasureTRAIN: ", gmeasure))
+      # 
+      # print(paste0("CompTime:", time2-time1))
+      # 
+      # 
+      # #------------------------------------------------------------------------#
+      # 
+      # # Prediction
+      # for(i in 1:ncol(df.test)){
+      #   df.test[,i] <- as.numeric(as.character(df.test[,i]))
+      # }
+      # 
+      # model.result.pred <- predict(model.result, df.test, type="prob")
+      # # print(confusionMatrix(xfbResults_pred[,2], LABELTripAdvisorFeaturesTEST))
+      # prediction <- data.frame(df.id , df.label, model.result.pred[,2])
+      # # setnames(TripAdvisorPrediction, old=c("IDTripAdvisorFeaturesTEST", "LABELTripAdvisorFeaturesTEST", "ModelResults_pred...2."),
+      # #          new=c("id", "SentimentValue", "ProbSentiment"))
+      # 
+      # setnames(prediction,old=c("model.result.pred...2.","x","x.1"),
+      #          new=c("ProbSentiment","id","SentimentValue"))
+      # prediction$X <- NULL
+      # prediction$X.1 <- NULL
+      # 
+      # prediction$SentimentPred <- ifelse(prediction$ProbSentiment > 0.5, "positive", "negative")
+      # 
+      # no.neg.pred <- FALSE
+      # if (sum(prediction$SentimentPred=="negative") == 0){
+      #   no.neg.pred <- TRUE
+      # }
+      # 
+      # # Print confusion matrix test
+      # conf.table.test <- table(prediction$SentimentPred, prediction$SentimentValue)
+      # print("ConfMatrix TEST: ")
+      # print(table(prediction$SentimentPred, prediction$SentimentValue))
+      # print(postResample(prediction$SentimentPred, prediction$SentimentValue))
+      # 
+      # 
+      # 
+      # 
+      # # In case there is no negative prediction, asigning conf.table.test[1,1]
+      # # and conf.table.test[2,1] out of bounds error will happen
+      # if(no.neg.pred){
+      #   tp <- conf.table.test[1,2]
+      #   fp <- conf.table.test[1,1]
+      #   tn <- 0
+      #   fn <- 0
+      # } else {
+      #   tp <- conf.table.test[2,2]
+      #   fp <- conf.table.test[1,2]
+      #   tn <- conf.table.test[1,1]
+      #   fn <- conf.table.test[1,2]
+      # }
+      # 
+      # #precision <- conf.table.test[2,2]/sum(conf.table.test[2,1:2])
+      # precision <- tp/(tp+fp)
+      # 
+      # # recall <- conf.table.test[2,2]/sum(conf.table.test[1:2,2])
+      # recall <- tp/(tp + fn)
+      # 
+      # # F-Score: 2 * precision * recall /(precision + recall):
+      # fscore <- 2 * precision * recall /(precision + recall)
+      # 
+      # # G-measure: sqrt(precision*recall)
+      # gmeasure <- sqrt(precision * recall)
+      # 
+      # print(paste0("FscoreTEST: ", fscore))
+      # print(paste0("GmeasureTEST: ", gmeasure))
 
-        grid <- expand.grid(C = c(0.25), M = c(10))
-
-        set.seed(17)
-        time1 <- Sys.time()
-        model.result<- caret::train(SentimentValue ~ ., data = df,
-                                    method="J48",
-                                    trControl = control,
-                                    tuneGrid = grid,
-                                    metric="ROC")
-        time2 <- Sys.time()
-      }
-      
-     
-      
-      sink(path.results)
-      print(paste0("Model: ", models[j]))
-      print(paste0("DataSet: ", ds.name))
-      if(balances[i]=="0"){
-        "Unbalanced: No"
-      }else{
-        "Unbalanced: Yes"
-        print(paste0("IR: ", balances[i]))
-      }
-      print(paste0("Number of train instances: ", nrow(df)))
-      print("Model summary: ")
-      print(model.result)
-      
-      conf.matrix <- confusionMatrix(model.result)
-      
-      print("ConfusionMatrix: ")
-      print(conf.matrix)
-      
-      conf.table <- (nrow(df)/100)*(conf.matrix$table)
-      # Precision: tp/(tp+fp):
-      precision <- conf.table[2,2]/sum(conf.table[2,1:2])
-      
-      # Recall: tp/(tp + fn):
-      recall <- conf.table[2,2]/sum(conf.table[1:2,2])
-      
-      # F-Score: 2 * precision * recall /(precision + recall):
-      fscore <- 2 * precision * recall /(precision + recall)
-      
-      # G-measure: sqrt(precision*recall)
-      gmeasure <- sqrt(precision * recall)
-      
-      print(paste0("FscoreTRAIN: ", fscore))
-      print(paste0("GmeasureTRAIN: ", gmeasure))
-      
-      print(paste0("CompTime:", time2-time1))
-      
-      sink()
+      # Stop saving output into text
+      # sink()
       
     }# for models
   }

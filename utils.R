@@ -129,6 +129,15 @@ strDF <- function(dataset=4,name=""){
   print(table(df$SentimentValue))
 }
 
+getMethod <- function(method){
+  if (method == 1){
+    return ("Unigram")
+  } else if (method == 2){
+    return ("Bigram")
+  } else if (method == 3){
+    return ("WhatMatter")
+  }
+}
 #------------------------SPLITING DATA FUNCTIONS-------------------------------#
 
 splitTrainTest <- function(dataset, perc, colsdel){

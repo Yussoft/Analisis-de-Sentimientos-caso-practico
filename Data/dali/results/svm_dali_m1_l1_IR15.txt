@@ -1,0 +1,44 @@
+[1] "Model: svm"
+[1] "DataSet: dali"
+[1] "Balanced: No"
+[1] "Number of training instances: 873"
+[1] "Model summary: "
+Support Vector Machines with Linear Kernel 
+
+873 samples
+800 predictors
+  2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 698, 699, 698, 698, 699 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.8546053  0.3636364  0.9914335
+
+Tuning parameter 'C' was held constant at a value of 0.75
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      2.3      0.8
+  positive      4.0     92.9
+                            
+ Accuracy (average) : 0.9519
+
+[1] "FscoreTRAIN: 0.974759615384615"
+[1] "GmeasureTRAIN: 0.974897644018404"
+[1] "CompTime:3.48467302322388"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        3        2
+  positive        4      280
+ Accuracy     Kappa 
+0.9792388 0.4896998 
+[1] "FscoreTEST: 0.99290780141844"
+[1] "GmeasureTEST: 0.99290780141844"
