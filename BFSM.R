@@ -23,7 +23,7 @@ source("utils.R")
 # Nº4 : Dali: 140 pages
 # Nº5 : City of art and science: 210 pages
 
-dataset <- 5
+dataset <- 1
 
 # df is the variable containing the dataframe
 df <- LoadCSV(dataset,verbose = FALSE,name = "CoreEng")
@@ -84,50 +84,53 @@ if(nrow(word.pos) < 500){
   word.pos500 <- word.pos[1:500,]
 }
 
-# Change cols names
-word.neg.pos500 <- merge(word.neg500, word.pos500, by = "word", all = TRUE)
-setnames(word.neg.pos500, old=c("tfidf.x", "tf.x", "tfidf.y", "tf.y"),
-         new=c("tfidfNeg", "freqNeg", "tfidfPos", "freqPos"))
+SaveCSV(word.neg,dataset,"wordNegCloudB")
+SaveCSV(word.pos,dataset,"wordPosCloudB")
 
-# Top 500 bigrams
-word.neg.pos500 <- word.neg.pos500[order(tfidfNeg, decreasing = TRUE),]
-word.neg.pos500Vector <- word.neg.pos500$word
-
-word.neg.select <- word.neg[!(word.neg$word %in% word.pos$word),]
-word.pos.select <- word.pos[!(word.pos$word %in% word.neg$word),]
-word.common.pos.neg <- word.neg[(word.neg$word %in% word.pos$word),]
-
-word.neg.pos500Vector <- word.neg.pos500$word
-
-# DocumentTermMatrix for PositiveNegative opinions
-TripAdvisorPosNeg <- df[df$SentimentValue != "neutral",]
-TripAdvisorFeatures <- WordTFIDF(TripAdvisorPosNeg$titleopinion,sparsity = .999,
-                                 mode=2)$DOC
-TripAdvisorFeatures <- ifelse(TripAdvisorFeatures > 0, 1, 0)
-TripAdvisorFeatures <- TripAdvisorFeatures[, colnames(TripAdvisorFeatures) %in% as.character(word.neg.pos500Vector)]
-
-sink(paste0("./Data/",dataset,"bigramColNames.txt"))
-print(colnames(TripAdvisorFeatures))
-sink()
-
-SaveCSV(TripAdvisorFeatures,dataset,name="feat")
-SaveCSV(TripAdvisorPosNeg, dataset,name="posneg")
-
-# Preparing the final set
-TripAdvisorAndFeatures <- cbind(TripAdvisorPosNeg, TripAdvisorFeatures)
-TripAdvisorAndFeatures$pos <- NULL
-TripAdvisorAndFeatures$neg <- NULL
-
-# # Delete Neutral opinions
-TripAdvisorAndFeatures <- TripAdvisorAndFeatures[TripAdvisorAndFeatures$SentimentValue!="neutral",]
-TripAdvisorAndFeatures <- TripAdvisorAndFeatures[TripAdvisorAndFeatures$SentimentCore !="neutral",]
-
-# Complete set
-SaveCSV(dataframe = TripAdvisorAndFeatures,dataset,name = "BigramFeatures")
-
-# Not matching
-TripAdvisorAndFeatures_NOTMATCHING <- TripAdvisorAndFeatures[!(TripAdvisorAndFeatures$SentimentValue=="positive" & TripAdvisorAndFeatures$SentimentCore=="negative"),]
-TripAdvisorAndFeatures_NOTMATCHING <- TripAdvisorAndFeatures_NOTMATCHING[!(TripAdvisorAndFeatures_NOTMATCHING$SentimentValue=="negative" & TripAdvisorAndFeatures_NOTMATCHING$SentimentCore=="positive"),]
-SaveCSV(dataframe = TripAdvisorAndFeatures_NOTMATCHING,dataset,name = "BigramFeatures_NOMATCHING")
+# # Change cols names
+# word.neg.pos500 <- merge(word.neg500, word.pos500, by = "word", all = TRUE)
+# setnames(word.neg.pos500, old=c("tfidf.x", "tf.x", "tfidf.y", "tf.y"),
+#          new=c("tfidfNeg", "freqNeg", "tfidfPos", "freqPos"))
+# 
+# # Top 500 bigrams
+# word.neg.pos500 <- word.neg.pos500[order(tfidfNeg, decreasing = TRUE),]
+# word.neg.pos500Vector <- word.neg.pos500$word
+# 
+# word.neg.select <- word.neg[!(word.neg$word %in% word.pos$word),]
+# word.pos.select <- word.pos[!(word.pos$word %in% word.neg$word),]
+# word.common.pos.neg <- word.neg[(word.neg$word %in% word.pos$word),]
+# 
+# word.neg.pos500Vector <- word.neg.pos500$word
+# 
+# # DocumentTermMatrix for PositiveNegative opinions
+# TripAdvisorPosNeg <- df[df$SentimentValue != "neutral",]
+# TripAdvisorFeatures <- WordTFIDF(TripAdvisorPosNeg$titleopinion,sparsity = .999,
+#                                  mode=2)$DOC
+# TripAdvisorFeatures <- ifelse(TripAdvisorFeatures > 0, 1, 0)
+# TripAdvisorFeatures <- TripAdvisorFeatures[, colnames(TripAdvisorFeatures) %in% as.character(word.neg.pos500Vector)]
+# 
+# sink(paste0("./Data/",dataset,"bigramColNames.txt"))
+# print(colnames(TripAdvisorFeatures))
+# sink()
+# 
+# SaveCSV(TripAdvisorFeatures,dataset,name="feat")
+# SaveCSV(TripAdvisorPosNeg, dataset,name="posneg")
+# 
+# # Preparing the final set
+# TripAdvisorAndFeatures <- cbind(TripAdvisorPosNeg, TripAdvisorFeatures)
+# TripAdvisorAndFeatures$pos <- NULL
+# TripAdvisorAndFeatures$neg <- NULL
+# 
+# # # Delete Neutral opinions
+# TripAdvisorAndFeatures <- TripAdvisorAndFeatures[TripAdvisorAndFeatures$SentimentValue!="neutral",]
+# TripAdvisorAndFeatures <- TripAdvisorAndFeatures[TripAdvisorAndFeatures$SentimentCore !="neutral",]
+# 
+# # Complete set
+# SaveCSV(dataframe = TripAdvisorAndFeatures,dataset,name = "BigramFeatures")
+# 
+# # Not matching
+# TripAdvisorAndFeatures_NOTMATCHING <- TripAdvisorAndFeatures[!(TripAdvisorAndFeatures$SentimentValue=="positive" & TripAdvisorAndFeatures$SentimentCore=="negative"),]
+# TripAdvisorAndFeatures_NOTMATCHING <- TripAdvisorAndFeatures_NOTMATCHING[!(TripAdvisorAndFeatures_NOTMATCHING$SentimentValue=="negative" & TripAdvisorAndFeatures_NOTMATCHING$SentimentCore=="positive"),]
+# SaveCSV(dataframe = TripAdvisorAndFeatures_NOTMATCHING,dataset,name = "BigramFeatures_NOMATCHING")
 
 beep(2)

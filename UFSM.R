@@ -8,9 +8,6 @@
 #
 #------------------------------------------------------------------------------#
 
-# Load packages
-library(data.table)
-
 #Remember to change working directory
 source("utils.R")
 source("featureExtraction.R")
@@ -22,7 +19,7 @@ source("featureExtraction.R")
 # Nº4 : Dali: 140 pages
 # Nº5 : City of art and science: 210 pages
 
-dataset <- 1
+dataset <- 4
 df <- LoadCSV(dataset,FALSE,"CoreEng")
 
 TripAdvisor <- df
@@ -95,6 +92,10 @@ word.neg.select <- word.neg[!(word.neg$word %in% word.pos$word),]
 word.pos.select <- word.pos[!(word.pos$word %in% word.neg$word),]
 word.common.pos.neg <- word.neg[(word.neg$word %in% word.pos$word),]
 
+# Used in the word clouds
+SaveCSV(word.neg,dataset,"wordNegCloud")
+SaveCSV(word.pos,dataset,"wordPosCloud")
+
 # Free memory
 rm(word.freq.neg)
 rm(word.freq.pos)
@@ -116,7 +117,7 @@ sink()
 # Due to the stemming not working properly with some words, they will be
 # removed mannually.
 
-#Features deleted 
+#Features deleted
 
 if(dataset == 1){
   # Prado
@@ -728,7 +729,7 @@ if(dataset == 1){
   TripAdvisorFeatures$worst <- NULL
 
 } else if(dataset == 4){
-  # Dalí 
+  # Dalí
 
   TripAdvisorFeatures$addX <- TripAdvisorFeatures$add + TripAdvisorFeatures$addit
   TripAdvisorFeatures$addX <- ifelse(TripAdvisorFeatures$addX > 1, 1, TripAdvisorFeatures$addX)
