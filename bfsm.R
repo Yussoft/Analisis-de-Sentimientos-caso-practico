@@ -1,7 +1,7 @@
   #------------------------------------------------------------------------------#
 #
 # Original Author: Ana Valdivia
-# Author: Jesús Sánchez de Castro
+# Author: JesÃºs SÃ¡nchez de Castro
 # Date: August 2017
 #
 #                       BIGRAM FEATURE SELECTION METHOD 
@@ -17,11 +17,11 @@ source("utils.R")
 # 1.- Change working directory to where the code is
 # 2.- Choose a museum, asign the number of the museum to dataset variable
 
-# Nº1 : Prado Museum: 1230 pages
-# Nº2 : Tyssen Museum: 380 pages
-# Nº3 : Reina sofia : 340 pages
-# Nº4 : Dali: 140 pages
-# Nº5 : City of art and science: 210 pages
+# NÂº1 : Prado Museum: 1230 pages
+# NÂº2 : Tyssen Museum: 380 pages
+# NÂº3 : Reina sofia : 340 pages
+# NÂº4 : Dali: 140 pages
+# NÂº5 : City of art and science: 210 pages
 
 dataset <- 1
 
