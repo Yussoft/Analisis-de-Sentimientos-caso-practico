@@ -9,11 +9,14 @@
 #------------------------------------------------------------------------------#
 library(beepr)
 
-setwd("D:/TFG-")
+getPcPath <- function(){
+  
+  return ("D:/TFG-/Data/")
+}
 
 getDatasetName <- function(dataset){
-  
-  ds.name <- "hola"
+
+  ds.name <- ""
   
   if(is.numeric(dataset)){
     if(dataset == 1){
@@ -25,12 +28,12 @@ getDatasetName <- function(dataset){
     } else if(dataset == 4){
       ds.name <- "dali"
     } else if(dataset == 5){
-      ds.name <- "city"
+      ds.name <- "guggen"
     } else {
-      ds.name <- "city"
+      ds.name <- "guggen"
     }
   } else {
-    ds.name = "city"
+    ds.name = "guggen"
   }
   return(ds.name)
 }
@@ -45,14 +48,14 @@ LoadCSV <- function (dataset = 5, verbose = FALSE, name = ""){
   # Nº2 : Tyssen Museum: 380 pages
   # Nº3 : Reina sofia : 340 pages
   # Nº4 : Dali: 140 pages
-  # Nº5 : City of art and science: 210 pages
+  # Nº5 : Guggenheim Bilbao: 400 pages
   #
   # Returns:
   #   data frame with the data from the csv file
   ds.name <- getDatasetName(dataset)
 
   #Change path to match it with your pc's
-  pc.path="D:/TFG-/Data/"
+  pc.path <- getPcPath()
   
   # If no name, load the basic CSV, the data from the web
   if(name=="")
@@ -188,7 +191,7 @@ splitTrainTest <- function(dataset, perc, colsdel){
   
   # Core
   dataset.test.c <- core[-train.index.c, ]
-  dataset.test.id.c <- dataset.test.s$i
+  dataset.test.id.c <- dataset.test.c$id
   dataset.test.c$id <- NULL
   
   # Sentiment

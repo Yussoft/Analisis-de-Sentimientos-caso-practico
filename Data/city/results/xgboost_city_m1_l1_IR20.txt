@@ -38,13 +38,13 @@ Prediction negative positive
 
 [1] "FscoreTRAIN: 0.980541455160744"
 [1] "GmeasureTRAIN: 0.980696244992532"
-[1] "CompTime:1.19235801696777"
+[1] "CompTime:1.18778800964355"
 [1] "ConfMatrix TEST: "
           
            negative positive
-  negative        0       27
-  positive        6      748
-   Accuracy       Kappa 
- 0.95774648 -0.01273135 
-[1] "FscoreTEST: 0.965161290322581"
-[1] "GmeasureTEST: 0.965161290322581"
+  negative        0        6
+  positive        6      769
+    Accuracy        Kappa 
+ 0.984635083 -0.007741935 
+[1] "FscoreTEST: 0.992258064516129"
+[1] "GmeasureTEST: 0.992258064516129"

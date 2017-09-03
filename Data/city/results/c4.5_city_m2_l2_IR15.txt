@@ -1,0 +1,45 @@
+[1] "Model: c4.5"
+[1] "DataSet: city"
+[1] "Balanced: No"
+[1] "Number of training instances: 2477"
+[1] "Model summary: "
+C4.5-like Trees 
+
+2477 samples
+ 640 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1981, 1981, 1982, 1982, 1982 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.6598626  0.2903226  0.9926789
+
+Tuning parameter 'C' was held constant at a value of 0.25
+Tuning parameter 'M' was held constant at a value of 10
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      1.8      0.7
+  positive      4.4     93.1
+                            
+ Accuracy (average) : 0.9487
+
+[1] "FscoreTRAIN: 0.973189782562803"
+[1] "GmeasureTRAIN: 0.973377390946272"
+[1] "CompTime:26.8069648742676"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        1        2
+  positive      160      618
+   Accuracy       Kappa 
+0.792573624 0.004688557 
+[1] "FscoreTEST: 0.996774193548387"
+[1] "GmeasureTEST: 0.996774193548387"

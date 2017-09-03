@@ -1,0 +1,44 @@
+[1] "Model: svm"
+[1] "DataSet: tyssen"
+[1] "Balanced: No"
+[1] "Number of training instances: 2438"
+[1] "Model summary: "
+Support Vector Machines with Linear Kernel 
+
+2438 samples
+ 678 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1950, 1951, 1951, 1950, 1950 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.8767794  0.4402174  0.9931062
+
+Tuning parameter 'C' was held constant at a value of 0.75
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      2.1      0.7
+  positive      2.7     94.6
+                            
+ Accuracy (average) : 0.9668
+
+[1] "FscoreTRAIN: 0.982740251438312"
+[1] "GmeasureTRAIN: 0.982793823123864"
+[1] "CompTime:9.55720520019531"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        0        2
+  positive      161      618
+    Accuracy        Kappa 
+ 0.791293214 -0.005084518 
+[1] "FscoreTEST: 0.996774193548387"
+[1] "GmeasureTEST: 0.996774193548387"

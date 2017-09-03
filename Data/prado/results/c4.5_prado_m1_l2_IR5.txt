@@ -1,0 +1,45 @@
+[1] "Model: c4.5"
+[1] "DataSet: prado"
+[1] "Balanced: No"
+[1] "Number of training instances: 8681"
+[1] "Model summary: "
+C4.5-like Trees 
+
+8681 samples
+ 782 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 6945, 6945, 6944, 6945, 6945 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.9363698  0.8913378  0.9541982
+
+Tuning parameter 'C' was held constant at a value of 0.25
+Tuning parameter 'M' was held constant at a value of 10
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative     14.9      3.8
+  positive      1.8     79.4
+                            
+ Accuracy (average) : 0.9437
+
+[1] "FscoreTRAIN: 0.965758700371122"
+[1] "GmeasureTRAIN: 0.965829570203248"
+[1] "CompTime:4.05850339730581"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative       42       38
+  positive      766     1596
+  Accuracy      Kappa 
+0.67076167 0.03719469 
+[1] "FscoreTEST: 0.976744186046512"
+[1] "GmeasureTEST: 0.976744186046512"

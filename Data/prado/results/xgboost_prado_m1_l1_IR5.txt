@@ -1,0 +1,50 @@
+[1] "Model: xgboost"
+[1] "DataSet: prado"
+[1] "Balanced: No"
+[1] "Number of training instances: 8681"
+[1] "Model summary: "
+eXtreme Gradient Boosting 
+
+8681 samples
+ 782 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 6944, 6946, 6945, 6944, 6945 
+Resampling results:
+
+  ROC        Sens       Spec    
+  0.8947094  0.6033457  0.982582
+
+Tuning parameter 'nrounds' was held constant at a value of 2
+Tuning parameter 'max_depth' was held constant at a
+ a value of 0
+Tuning parameter 'colsample_bytree' was held constant at a value of 1
+Tuning parameter
+ 'min_child_weight' was held constant at a value of 1
+Tuning parameter 'subsample' was held constant at a value of 0.5
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative     10.1      1.5
+  positive      6.6     81.9
+                            
+ Accuracy (average) : 0.9194
+
+[1] "FscoreTRAIN: 0.953070528291767"
+[1] "GmeasureTRAIN: 0.953500698445927"
+[1] "CompTime:2.53842902183533"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        8       39
+  positive       29     2366
+ Accuracy     Kappa 
+0.9721540 0.1765138 
+[1] "FscoreTEST: 0.983783783783784"
+[1] "GmeasureTEST: 0.983783783783784"

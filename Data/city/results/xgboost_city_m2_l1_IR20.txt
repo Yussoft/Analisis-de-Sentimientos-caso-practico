@@ -1,0 +1,50 @@
+[1] "Model: xgboost"
+[1] "DataSet: city"
+[1] "Balanced: No"
+[1] "Number of training instances: 2438"
+[1] "Model summary: "
+eXtreme Gradient Boosting 
+
+2438 samples
+ 640 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1950, 1951, 1951, 1950, 1950 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.8059045  0.2478261  0.9974138
+
+Tuning parameter 'nrounds' was held constant at a value of 2
+Tuning parameter 'max_depth' was held constant at a
+ a value of 0
+Tuning parameter 'colsample_bytree' was held constant at a value of 1
+Tuning parameter
+ 'min_child_weight' was held constant at a value of 1
+Tuning parameter 'subsample' was held constant at a value of 0.5
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      1.2      0.2
+  positive      3.6     95.0
+                            
+ Accuracy (average) : 0.9619
+
+[1] "FscoreTRAIN: 0.98031746031746"
+[1] "GmeasureTRAIN: 0.980461538721525"
+[1] "CompTime:1.21539211273193"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        0        7
+  positive        6      768
+    Accuracy        Kappa 
+ 0.983354673 -0.008342437 
+[1] "FscoreTEST: 0.990967741935484"
+[1] "GmeasureTEST: 0.990967741935484"

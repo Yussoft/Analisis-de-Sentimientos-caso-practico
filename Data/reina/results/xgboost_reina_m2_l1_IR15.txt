@@ -1,0 +1,50 @@
+[1] "Model: xgboost"
+[1] "DataSet: reina"
+[1] "Balanced: No"
+[1] "Number of training instances: 1953"
+[1] "Model summary: "
+eXtreme Gradient Boosting 
+
+1953 samples
+ 749 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1562, 1563, 1563, 1561, 1563 
+Resampling results:
+
+  ROC        Sens        Spec     
+  0.6753414  0.09833333  0.9967213
+
+Tuning parameter 'nrounds' was held constant at a value of 2
+Tuning parameter 'max_depth' was held constant at a
+ a value of 0
+Tuning parameter 'colsample_bytree' was held constant at a value of 1
+Tuning parameter
+ 'min_child_weight' was held constant at a value of 1
+Tuning parameter 'subsample' was held constant at a value of 0.5
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      0.6      0.3
+  positive      5.6     93.4
+                            
+ Accuracy (average) : 0.9406
+
+[1] "FscoreTRAIN: 0.969198088157196"
+[1] "GmeasureTRAIN: 0.969567862766806"
+[1] "CompTime:1.5086088180542"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        2        1
+  positive       32      609
+ Accuracy     Kappa 
+0.9487578 0.1004064 
+[1] "FscoreTEST: 0.998360655737705"
+[1] "GmeasureTEST: 0.998360655737705"

@@ -1,0 +1,50 @@
+[1] "Model: xgboost"
+[1] "DataSet: tyssen"
+[1] "Balanced: No"
+[1] "Number of training instances: 4644"
+[1] "Model summary: "
+eXtreme Gradient Boosting 
+
+4644 samples
+ 640 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 3715, 3716, 3715, 3714, 3716 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.9046101  0.8277911  0.9017909
+
+Tuning parameter 'nrounds' was held constant at a value of 2
+Tuning parameter 'max_depth' was held constant at a
+ a value of 0
+Tuning parameter 'colsample_bytree' was held constant at a value of 1
+Tuning parameter
+ 'min_child_weight' was held constant at a value of 1
+Tuning parameter 'subsample' was held constant at a value of 0.5
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative     41.4      4.9
+  positive      8.6     45.1
+                            
+ Accuracy (average) : 0.8648
+
+[1] "FscoreTRAIN: 0.869601328903654"
+[1] "GmeasureTRAIN: 0.870156452693931"
+[1] "CompTime:1.57426309585571"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        6       45
+  positive      155      575
+   Accuracy       Kappa 
+ 0.74391805 -0.04726785 
+[1] "FscoreTEST: 0.92741935483871"
+[1] "GmeasureTEST: 0.92741935483871"

@@ -1,0 +1,45 @@
+[1] "Model: c4.5"
+[1] "DataSet: reina"
+[1] "Balanced: No"
+[1] "Number of training instances: 1953"
+[1] "Model summary: "
+C4.5-like Trees 
+
+1953 samples
+ 749 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1562, 1563, 1563, 1561, 1563 
+Resampling results:
+
+  ROC       Sens         Spec
+  0.503643  0.008333333  1   
+
+Tuning parameter 'C' was held constant at a value of 0.25
+Tuning parameter 'M' was held constant at a value of 10
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      0.1      0.0
+  positive      6.2     93.8
+                           
+ Accuracy (average) : 0.938
+
+[1] "FscoreTRAIN: 0.968014803066349"
+[1] "GmeasureTRAIN: 0.968510348464056"
+[1] "CompTime:27.4290189743042"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        0        4
+  positive       34      606
+   Accuracy       Kappa 
+ 0.94099379 -0.01123967 
+[1] "FscoreTEST: 0.99344262295082"
+[1] "GmeasureTEST: 0.99344262295082"

@@ -1,0 +1,45 @@
+[1] "Model: c4.5"
+[1] "DataSet: tyssen"
+[1] "Balanced: No"
+[1] "Number of training instances: 2786"
+[1] "Model summary: "
+C4.5-like Trees 
+
+2786 samples
+ 678 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 2229, 2229, 2228, 2229, 2229 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.9588749  0.9546751  0.9616694
+
+Tuning parameter 'C' was held constant at a value of 0.25
+Tuning parameter 'M' was held constant at a value of 10
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative     15.9      3.2
+  positive      0.8     80.2
+                            
+ Accuracy (average) : 0.9605
+
+[1] "FscoreTRAIN: 0.975961538461538"
+[1] "GmeasureTRAIN: 0.976069314058067"
+[1] "CompTime:45.2180519104004"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        4       17
+  positive      157      603
+   Accuracy       Kappa 
+ 0.77720871 -0.00379672 
+[1] "FscoreTEST: 0.97258064516129"
+[1] "GmeasureTEST: 0.97258064516129"

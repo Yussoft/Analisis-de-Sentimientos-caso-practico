@@ -1,0 +1,50 @@
+[1] "Model: xgboost"
+[1] "DataSet: dali"
+[1] "Balanced: No"
+[1] "Number of training instances: 982"
+[1] "Model summary: "
+eXtreme Gradient Boosting 
+
+982 samples
+794 predictors
+  2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 786, 785, 786, 785, 786 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.6863794  0.1387097  0.9854102
+
+Tuning parameter 'nrounds' was held constant at a value of 2
+Tuning parameter 'max_depth' was held constant at a
+ a value of 0
+Tuning parameter 'colsample_bytree' was held constant at a value of 1
+Tuning parameter
+ 'min_child_weight' was held constant at a value of 1
+Tuning parameter 'subsample' was held constant at a value of 0.5
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      2.2      1.2
+  positive     14.0     82.6
+                            
+ Accuracy (average) : 0.8483
+
+[1] "FscoreTRAIN: 0.915866741953698"
+[1] "GmeasureTRAIN: 0.918156615906364"
+[1] "CompTime:0.853487968444824"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        3        1
+  positive       88      197
+  Accuracy      Kappa 
+0.69204152 0.03763984 
+[1] "FscoreTEST: 0.994949494949495"
+[1] "GmeasureTEST: 0.994949494949495"

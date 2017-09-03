@@ -1,0 +1,45 @@
+[1] "Model: c4.5"
+[1] "DataSet: dali"
+[1] "Balanced: No"
+[1] "Number of training instances: 1636"
+[1] "Model summary: "
+C4.5-like Trees 
+
+1636 samples
+ 800 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1308, 1308, 1310, 1309, 1309 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.9076436  0.9594259  0.8214265
+
+Tuning parameter 'C' was held constant at a value of 0.25
+Tuning parameter 'M' was held constant at a value of 10
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative     47.7      9.0
+  positive      2.0     41.3
+                          
+ Accuracy (average) : 0.89
+
+[1] "FscoreTRAIN: 0.882506527415144"
+[1] "GmeasureTRAIN: 0.884960039977303"
+[1] "CompTime:24.2603931427002"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative       20       26
+  positive       71      172
+ Accuracy     Kappa 
+0.6643599 0.1021108 
+[1] "FscoreTEST: 0.868686868686869"
+[1] "GmeasureTEST: 0.868686868686869"

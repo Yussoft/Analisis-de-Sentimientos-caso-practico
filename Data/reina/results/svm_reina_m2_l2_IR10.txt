@@ -1,0 +1,44 @@
+[1] "Model: svm"
+[1] "DataSet: reina"
+[1] "Balanced: No"
+[1] "Number of training instances: 2014"
+[1] "Model summary: "
+Support Vector Machines with Linear Kernel 
+
+2014 samples
+ 749 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1611, 1610, 1612, 1611, 1612 
+Resampling results:
+
+  ROC        Sens        Spec
+  0.7602003  0.07132132  1   
+
+Tuning parameter 'C' was held constant at a value of 0.75
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      0.6      0.0
+  positive      8.4     90.9
+                            
+ Accuracy (average) : 0.9156
+
+[1] "FscoreTRAIN: 0.955636743215031"
+[1] "GmeasureTRAIN: 0.956578527231622"
+[1] "CompTime:14.6388599872589"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        8        3
+  positive      184      449
+ Accuracy     Kappa 
+0.7096273 0.0480602 
+[1] "FscoreTEST: 0.993362831858407"
+[1] "GmeasureTEST: 0.993362831858407"

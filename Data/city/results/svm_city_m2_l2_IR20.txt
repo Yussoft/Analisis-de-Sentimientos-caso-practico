@@ -1,0 +1,44 @@
+[1] "Model: svm"
+[1] "DataSet: city"
+[1] "Balanced: No"
+[1] "Number of training instances: 2438"
+[1] "Model summary: "
+Support Vector Machines with Linear Kernel 
+
+2438 samples
+ 640 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1950, 1951, 1951, 1950, 1950 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.8761821  0.5518116  0.9900918
+
+Tuning parameter 'C' was held constant at a value of 0.75
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      2.6      0.9
+  positive      2.1     94.3
+                            
+ Accuracy (average) : 0.9692
+
+[1] "FscoreTRAIN: 0.983950353092232"
+[1] "GmeasureTRAIN: 0.983969300952294"
+[1] "CompTime:9.34756088256836"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        0        3
+  positive      161      617
+    Accuracy        Kappa 
+ 0.790012804 -0.007599239 
+[1] "FscoreTEST: 0.995161290322581"
+[1] "GmeasureTEST: 0.995161290322581"

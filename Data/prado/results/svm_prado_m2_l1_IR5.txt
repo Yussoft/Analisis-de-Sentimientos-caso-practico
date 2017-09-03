@@ -1,0 +1,44 @@
+[1] "Model: svm"
+[1] "DataSet: prado"
+[1] "Balanced: No"
+[1] "Number of training instances: 8681"
+[1] "Model summary: "
+Support Vector Machines with Linear Kernel 
+
+8681 samples
+ 712 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 6944, 6946, 6945, 6944, 6945 
+Resampling results:
+
+  ROC        Sens  Spec     
+  0.9960891  1     0.9919819
+
+Tuning parameter 'C' was held constant at a value of 0.75
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative     16.7      0.7
+  positive      0.0     82.7
+                            
+ Accuracy (average) : 0.9933
+
+[1] "FscoreTRAIN: 0.995975017349063"
+[1] "GmeasureTRAIN: 0.995983085086423"
+[1] "CompTime:1.2589589993159"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative        6       17
+  positive       31     2388
+ Accuracy     Kappa 
+0.9803440 0.1905979 
+[1] "FscoreTEST: 0.992931392931393"
+[1] "GmeasureTEST: 0.992931392931393"
