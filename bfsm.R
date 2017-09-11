@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------#
 #
-# Author: Jesús Sánchez de Castro
+# Author: JesÃºs SÃ¡nchez de Castro
 # Impired by: Ana Valdivia
 # Date: September 2017
 #
@@ -19,11 +19,11 @@ source("utils.R")
 # 2.- Choose a museum, asign the number of the museum to dataset variable
 
 # MUSEUMS:
-# Nº1 : Prado Museum: 1230 pages
-# Nº2 : Tyssen Museum: 380 pages
-# Nº3 : Reina sofia : 340 pages
-# Nº4 : Dali: 140 pages
-# Nº5 : Guggenheim: 400 pages
+# NÂº1 : Prado Museum: 1230 pages
+# NÂº2 : Tyssen Museum: 380 pages
+# NÂº3 : Reina sofia : 340 pages
+# NÂº4 : Dali: 140 pages
+# NÂº5 : Guggenheim: 400 pages
 
 dataset <- 5
 
