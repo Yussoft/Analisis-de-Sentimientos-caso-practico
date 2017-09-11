@@ -32,5 +32,4 @@ Prediction negative positive
 
 [1] "FscoreTRAIN: 0.973429788384829"
 [1] "GmeasureTRAIN: 0.973682548469039"
-[1] "CompTime:2.85031534830729"
-[1] NA
+[1] "CompTime:2.45268366734187"

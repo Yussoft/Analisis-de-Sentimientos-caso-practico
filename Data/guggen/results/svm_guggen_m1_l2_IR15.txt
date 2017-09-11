@@ -1,0 +1,44 @@
+[1] "Model: svm"
+[1] "DataSet: guggen"
+[1] "Balanced: No"
+[1] "Number of training instances: 2381"
+[1] "Model summary: "
+Support Vector Machines with Linear Kernel 
+
+2381 samples
+ 817 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1905, 1905, 1905, 1904, 1905 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.8036103  0.2285714  0.9928611
+
+Tuning parameter 'C' was held constant at a value of 0.75
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative      1.3      0.7
+  positive      4.5     93.4
+                            
+ Accuracy (average) : 0.9479
+
+[1] "FscoreTRAIN: 0.972890249234805"
+[1] "GmeasureTRAIN: 0.973087105384904"
+[1] "CompTime:17.3439610004425"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  negative       16        3
+  positive      201      567
+  Accuracy      Kappa 
+0.74078780 0.09543288 
+[1] "FscoreTEST: 0.994736842105263"
+[1] "GmeasureTEST: 0.994736842105263"

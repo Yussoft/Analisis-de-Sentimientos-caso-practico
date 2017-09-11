@@ -1,0 +1,44 @@
+[1] "Model: c4.5"
+[1] "DataSet: guggen"
+[1] "Balanced IR: 0"
+[1] "Number of training instances: 2358"
+[1] "Model summary: "
+C4.5-like Trees 
+
+2358 samples
+ 748 predictor
+   2 classes: 'negative', 'positive' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 1885, 1887, 1887, 1886, 1887 
+Resampling results:
+
+  ROC  Sens  Spec
+  0.5  0     1   
+
+Tuning parameter 'C' was held constant at a value of 0.25
+Tuning parameter 'M' was held constant at a value of 10
+[1] "ConfusionMatrix: "
+Cross-Validated (5 fold) Confusion Matrix 
+
+(entries are percentual average cell counts across resamples)
+ 
+          Reference
+Prediction negative positive
+  negative        0        0
+  positive        5       95
+                            
+ Accuracy (average) : 0.9504
+
+[1] "FscoreTRAIN: 0.974559686888454"
+[1] "GmeasureTRAIN: 0.974875212214011"
+[1] "CompTime:42.9882469177246"
+[1] "ConfMatrix TEST: "
+          
+           negative positive
+  positive      217      570
+ Accuracy     Kappa 
+0.7242694 0.0000000 
+[1] "FscoreTEST: 0.840088430361091"
+[1] "GmeasureTEST: 0.851040173777046"

@@ -49,16 +49,16 @@ source("utils.R")
 #initCoreNLP("C:/TFG/stanford-corenlp-full-2016-10-31")
 initCoreNLP(libLoc ="D:\\TFG-\\stanford-corenlp-full-2015-12-09",mem="10g")
 
-# Read the dataframe (remember that the / must point to the right)
+# Read the dataframe (remember that the / must point to the right or be \\)
 # give data a value depending on what csv you want to read
 
-# Nº1 : Prado Museum: 1230 pages
-# Nº2 : Tyssen Museum: 380 pages
-# Nº3 : Reina sofia : 340 pages
-# Nº4 : Dali: 140 pages
-# Nº5 : City of art and science: 210 pages
+# Nº1 : Prado Museum
+# Nº2 : Tyssen Museum
+# Nº3 : Reina sofia 
+# Nº4 : Dali
+# Nº5 : Guggenheim
 
-data <- 4
+data <- 5
 
 # data frame read
 data.f <- LoadCSV(dataset = data,FALSE,"")
@@ -75,7 +75,7 @@ data.f$SentimentValue <- ifelse(data.f$rating <= 2, "negative",
 # Create a sentimentValueCore and use CoreNLP to predict it.
 data.f$SentimentCore <- NA
 
-# Change $titleopinion to character (currently factor)
+# Change $titleopinion to character if it is a factor
 if(typeof(data.f$titleopinion)=="factor"){
   data.f$titleopinion <- as.character(data.f$titleopinion)
 }

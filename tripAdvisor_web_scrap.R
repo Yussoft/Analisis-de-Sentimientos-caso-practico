@@ -1,33 +1,25 @@
-###############################################################################
+#------------------------------------------------------------------------------#
 #
-# TRIP ADVISOR OPINIONS 
+# Author: Jesús Sánchez de Castro
+# Impired by: Ana Valdivia
+# Date: September 2017
 #
-# Inspired by:
-#
-# Author: Ana Valdivia
-# https://github.com/anavaldi/TFM/blob/master/scrapTripAdvisorLoop_anony_ENG_complete.R
-#
-# Modified Version, Author: Jesús Sánchez de Castro.
-# Date: 16/03/2017
+#                       WEB SCRAPING: TRIPADVISOR DATASETS
 #
 #------------------------------------------------------------------------------#
 #
 # READ ME
 # 
-# This code is made by Ana Valdivia, but I (Jesús Sánchez) will make some 
-# modifications and add comments so anyone can use it easily by just modifying 
-# some variables.
+# This code is prepared to download and extract data from TripAdvisor reviews.
+# Check the following variables listed below. These have to be changed if you 
+# want to download data from other Monuments. 
 # 
 # 1.- Variables to keep in mind:
 #
 #     - totalpages: In tripAdvisor you can find pages of reviews, 
 #       each one containing 10 reviews. In totalpages you have to put the 
 #       maximun number of pages that you want to download.
-# 
-#     - last: say that you want to download from the page number x 
-#       to the page number y, then set last to x and totalpages to y. Otherwise
-#       just comment that line and use from 1 to totalpages.
-# 
+#
 #     - html_directory: variable that contains the path to the
 #       directory where the HTML file will be downloaded. Used to read it too.
 #       
@@ -52,7 +44,7 @@
 #           if it is the main page shown in the web page or like this:
 #               
 #         - "https://www.tripadvisor.co.uk/Attraction_Review-g187514-d190152-
-#           Reviews-or",k-1,"0-Queen_Sofia_Arts_Center_Museo_Nacional_Centro_
+#           Reviews-or",##HERE## k-1 ##HERE##,"0-Queen_Sofia_Arts_Center_Museo_Nacional_Centro_
 #           de_Arte_Reina_Sofia-Madrid.html" (ended in .html)
 #           
 #           if we are downloading the page number x where x > 1. In this case
@@ -80,55 +72,46 @@
 #     ,gsub("rn", "", id[i]), is the part where we use the IDs stored by this
 #     script, the rest is the normal URL. 
 # 
-###############################################################################
+#------------------------------------------------------------------------------#
 
 # Libraries used 
 library(rvest)
-library(beepr)
 library(stringr)
 source("utils.R")
-# change language
-Sys.setlocale("LC_TIME", "English")
-
-# Variables: Here are the variables you need to change to download a data base 
-# from a TripAdvisor web page in english.
 
 TripAdvisor <- data.frame()# Data frame containing the result
 
 #-------------------------------SELECT DATA------------------------------------#
+# Variables: Here are the variables you need to change to download a data base 
+# from a TripAdvisor web page in english.
 
+# MUSEUMS:
 # Nº1 : Prado Museum: 1230 pages
 # Nº2 : Tyssen Museum: 380 pages
 # Nº3 : Reina sofia : 340 pages
 # Nº4 : Dali: 140 pages
-# Nº5 : Guggenheim: 210 pages
-
+# Nº5 : Guggenheim: 400 pages
 
 totalpages <- list(1230,380,340,340,400) # Number of pages, 10 reviews per page
-dataset <- 5
+dataset <- 5 # Dataset number (see above). 4 is Dalí's Theater-Museum
 
-ds.name <- getDatasetName(dataset)
-# Unused museums, only the top5 with more reviews
-# Dalí Museum: 140
-# Picasso: 180
+ds.name <- getDatasetName(dataset) # Name of the dataset used to build the path
 
-# The folder of the project in your PC
+# The folder of the project in your PC (CHANGE THIS IN UTILS.R)
 pc.path <- getPcPath()
 
-# The path of each HTML file
+# The path of each HTML file (THIS PATH IS FOR MY PC, YOU HAVE TO BUILDS YOURS)
 html.directory <- paste0(pc.path,ds.name,"/","webPage.html")
 
-messages <- TRUE 
-#last <- 1
-#Also change complete_review_url, lines 280-290.
+messages <- TRUE # Debug messages
+
+#Also change complete_review_url, lines 315-321
 
 print(paste0("Dataset = ",dataset,", Name = ",ds.name,""))
 print(paste0("Pages = ",totalpages[dataset]))
 
 #---------------------------DOWNLOAD AND PROCESS HTML--------------------------#
 
-
-#for(k in last:totalpages){ #Download from page "last" to "totalpages".
 #All the reviews are downloaded, from 1 to max.
 for(k in 1:totalpages[[dataset]]){     
   if(messages)
@@ -177,14 +160,18 @@ for(k in 1:totalpages[[dataset]]){
       url <- paste0("https://www.tripadvisor.co.uk/Attraction_Review-g187454-d190276-Reviews-or",k-1,"0-Guggenheim_Museum_Bilbao-Bilbao_Province_of_Vizcaya_Basque_Country.html")
     }
   }
-
-  # Museo Teatro Dalí
-  # if(k == 1) {
-  #   url <- paste0("https://www.tripadvisor.co.uk/Attraction_Review-g315921-d254665-Reviews-Dali_Theatre_Museum-Figueres_Province_of_Girona_Catalonia.html#REVIEWS")
-  # } else {
-  #   url <- paste0("https://www.tripadvisor.co.uk/Attraction_Review-g315921-d254665-Reviews-or",k-1,"0-Dali_Theatre_Museum-Figueres_Province_of_Girona_Catalonia.html")
+  
+  # ADD ANOTHER MUSEUM HERE:
+  
+  #  ANOTHER MUSEUM
+  # } else if(dataset == x){
+  #   if(k == 1) {
+  #     url <- paste0("atraction-url#REVIEWS")
+  #   } else {
+  #     url <- paste0("par1,k-1,part2")
+  #   }
   # }
-  #
+
   # Picasso Museum
   # if(k == 1) {
   #     url <- paste0("https://www.tripadvisor.co.uk/Attraction_Review-g187438-d288435-Reviews-Museo_Picasso_Malaga-Malaga_Costa_del_Sol_Province_of_Malaga_Andalucia.html#REVIEWS")
@@ -197,20 +184,6 @@ for(k in 1:totalpages[[dataset]]){
     if(messages)
       print("HTML Files downloaded.")
 
-    #--------------------------------------------------------------------------#
-    # This part of the code reads the HTML file and extracts the information
-    # that will be added to the data frame.
-    # Information:
-    #   - id: id of a user in tripAdvisor, e.g: rn467434236
-    #   - username: user's username, e.g: Love2Travel
-    #   - location: where the user is from or lives, e.g: Texas
-    #   - userop: number of reviews published by the user.
-    #   - quote: shot phrase about the attraction, e.g: "Dalí is amazing"
-    #   - rating: rating given by the user: 1 to 5.
-    #   - date: date when the review was published
-    #   - reviewnospace: The complete review.
-    #--------------------------------------------------------------------------#
-
   # User's information:
   # Name
   users <- url %>%
@@ -218,7 +191,7 @@ for(k in 1:totalpages[[dataset]]){
       html_nodes(".member_info")
   # .memberOverlayLink")
 
-  # Filter to only users reviews
+  # Filter to only use users' reviews
   rev <- c()
   for(i in 1:length(users)){
     user.ch <- as.character(users[i])
@@ -307,7 +280,12 @@ for(k in 1:totalpages[[dataset]]){
       date.aux <- reviews %>%
         html_node(".ratingDate")
       date[i] <- as.Date(substr(regmatches(as.character(date.aux[i]),
-                                           regexpr('Reviewed .+\n', as.character(date.aux[i]))), 10, nchar(regmatches(as.character(date.aux[i]), regexpr('Reviewed .+\n', as.character(date.aux[i]))))-1), format="%d %b %Y")
+                                           regexpr('Reviewed .+\n',
+                                                   as.character(date.aux[i]))), 
+                                10, nchar(regmatches(as.character(date.aux[i]), 
+                                                     regexpr('Reviewed .+\n', 
+                                                             as.character(date.aux[i]))))-1), 
+                         format="%d %b %Y")
     }
   }
 
@@ -322,7 +300,7 @@ for(k in 1:totalpages[[dataset]]){
   reviewnospace <- as.character(c(1:length(id)))
   for(i in 1:length(id)){
 
-    # completeReviewURL is used here
+    # PUT YOUR URL HERE:
 
     # completeReviewURL <- paste0("https://www.tripadvisor.co.uk/ShowUserReviews-g187514-d190152-r",gsub("rn", "", id[i]),"-Queen_Sofia_Arts_Center_Museo_Nacional_Centro_de_Arte_Reina_Sofia-Madrid.html#REVIEWS")
     # completeReviewURL <- paste0("https://www.tripadvisor.co.uk/ShowUserReviews-g187514-d190143-r",gsub("rn", "", id[i]),"-Prado_National_Museum-Madrid.html#REVIEWS")
@@ -348,11 +326,11 @@ for(k in 1:totalpages[[dataset]]){
     location[10] <- "unknown"
   }
   
-  
+  # Create a temporary data.frame for each page and add them to TripAdvisor
   temp.TripAdvisor <- data.frame(id, username, location, quote, rating,
                                  date, reviewnospace, page, 
                                  stringsAsFactors = FALSE)
-
+  # temp added
   TripAdvisor <- rbind(TripAdvisor, temp.TripAdvisor)
 }
 
@@ -366,9 +344,11 @@ TripAdvisor$reviewnospace <- gsub("<br/>", "", TripAdvisor$reviewnospace)
 TripAdvisor$titleopinion <- paste(TripAdvisor$quote, TripAdvisor$reviewnospace,
                                   sep=". ")
 
+# See in utils.R, you might need to change the function.
 SaveCSV(TripAdvisor,dataset,name = "ENG")
 
 if(messages){
     print("Saved to a csv file.")
 }
-beep(2)
+# Who doesn't love FF
+beep(3)

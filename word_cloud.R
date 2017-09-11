@@ -1,12 +1,10 @@
 #------------------------------------------------------------------------------#
 #
-# WORD CLOUD TRIP ADVISOR
-#
-# Inspired by: Print a word cloud with opinions
-# 
 # Author: Jesús Sánchez de Castro
+# Impired by: Ana Valdivia
+# Date: September 2017
 #
-# Date: July 2017
+#                       WORD CLOUD GRAPHIC
 #
 #------------------------------------------------------------------------------#
 # Loading libraries
@@ -16,11 +14,12 @@ library(RColorBrewer)
 
 source("utils.R")
 
+# MUSEUMS:
 # Nº1 : Prado Museum: 1230 pages
 # Nº2 : Tyssen Museum: 380 pages
 # Nº3 : Reina sofia : 340 pages
 # Nº4 : Dali: 140 pages
-# Nº5 : City of art and science: 210 pages
+# Nº5 : Guggenheim: 400 pages
 
 #Change path to match it with your pc's
 pc.path="D:/TFG-/Data/"

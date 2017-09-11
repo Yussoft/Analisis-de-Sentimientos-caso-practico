@@ -1,10 +1,10 @@
 #------------------------------------------------------------------------------#
 #
-# MODEL PERFORMANCE
-#
-# Description: Construct several models and print results
 # Author: Jesús Sánchez de Castro
-# Date: August 2017
+# Impired by: Ana Valdivia
+# Date: September 2017
+#
+#                       MODEL TRAINING AND PERFORMANCE
 #
 #------------------------------------------------------------------------------#
 
@@ -28,7 +28,7 @@ options(mc.cores = detectCores())
 
 #--------------------------------PARAMETERS------------------------------------#
 # Algorithms used
-models <- c("xgboost","svm","c4.5")
+ models <- c("xgboost","svm","c4.5")
 # models <- c("c4.5")
 # models <- c("xgboost")
 # models <- c("svm")
@@ -40,16 +40,15 @@ method <- 2
 
 # nº1 -> SentimentValue
 # nº2 -> SentimentCore
-# nº3 -> Mix
-class.label <- 2
+class.label <- 1
 
 # Databases: 
 # Nº1 : Prado Museum: 1230 pages
 # Nº2 : Tyssen Museum: 380 pages
 # Nº3 : Reina sofia : 340 pages
 # Nº4 : Dali: 140 pages
-# Nº5 : City of art and science: 210 pages
-dataset <- 1
+# Nº5 : Guggenheim: 400 pages
+dataset <- 5
   
 # # J48 Algorithm parameters:
 # control <- trainControl(method="cv", number=5, classProbs = TRUE,
@@ -58,9 +57,9 @@ dataset <- 1
 # grid <- expand.grid(C = c(0.25) , M = 50)
 
 # IR is the value that show how unbalanced a dataset is.
-dataset.IRs <- c(81,110,18,17,110)
+dataset.IRs <- c(81,110,18,17,17)
 
-balances <- c(15,10,5,1,0)
+balances <- c(20,15,10,5,1,0)
 #balances <- c(0)
 
 ds.name <- getDatasetName(dataset)
@@ -276,6 +275,7 @@ for(i in 1:length(balances)){
       print(conf.matrix)
 
       conf.table <- (nrow(df.train)/100)*(conf.matrix$table)
+      
       # Precision: tp/(tp+fp):
       precision <- conf.table[2,2]/sum(conf.table[2,1:2])
 
@@ -324,7 +324,6 @@ for(i in 1:length(balances)){
       print("ConfMatrix TEST: ")
       print(table(prediction$SentimentPred, prediction$SentimentValue))
       print(postResample(prediction$SentimentPred, prediction$SentimentValue))
-
 
 
 

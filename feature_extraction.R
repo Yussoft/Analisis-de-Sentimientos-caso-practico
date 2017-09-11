@@ -8,7 +8,9 @@
 # Date: July 2017
 #
 ################################################################################
+# Remember to change working directory
 
+# Load packages
 library(tm)
 library(SnowballC)
 library(NLP)

@@ -1,11 +1,21 @@
+#------------------------------------------------------------------------------#
+#
+# Author: Jesús Sánchez de Castro
+# Impired by: Ana Valdivia
+# Date: September 2017
+#
+#                 SPLITING DATA INTO TRAIN/TEST + OVERSAMPLING
+#
+#------------------------------------------------------------------------------#
 source("utils.R")
-source("featureExtraction.R")
+source("feature_extraction.R")
 
+# MUSEUMS:
 # Nº1 : Prado Museum: 1230 pages
 # Nº2 : Tyssen Museum: 380 pages
 # Nº3 : Reina sofia : 340 pages
 # Nº4 : Dali: 140 pages
-# Nº5 : City of art and science: 210 pages
+# Nº5 : Guggenheim: 400 pages
 
 dataset <- 5
 cols.del <- c("username", "location", "userop", "quote", "rating", "date",
@@ -13,13 +23,13 @@ cols.del <- c("username", "location", "userop", "quote", "rating", "date",
 perc <- 0.75
 
 # Desired IR values for the data
-#balance <- c(20,15,10,5,1)
-balance <- c()
+balance <- c(20,15,10,5,1)
+#balance <- c()
 
 # n1 -> UnigramFeatures
 # n2 -> BigramFeatures
 # n3 -> WhatMatters 
-method <- 1
+method <- 2
 m <- ""
 
 if(method == 1){
