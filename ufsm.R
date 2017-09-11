@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------#
 #
-# Author: Jesús Sánchez de Castro
+# Author: JesÃºs SÃ¡nchez de Castro
 # Impired by: Ana Valdivia
 # Date: September 2017
 #
@@ -13,11 +13,11 @@ source("utils.R")
 source("feature_extraction.R")
 
 # MUSEUMS:
-# Nº1 : Prado Museum: 1230 pages
-# Nº2 : Tyssen Museum: 380 pages
-# Nº3 : Reina sofia : 340 pages
-# Nº4 : Dali: 140 pages
-# Nº5 : Guggenheim: 400 pages
+# NÂº1 : Prado Museum: 1230 pages
+# NÂº2 : Tyssen Museum: 380 pages
+# NÂº3 : Reina sofia : 340 pages
+# NÂº4 : Dali: 140 pages
+# NÂº5 : Guggenheim: 400 pages
 
 dataset <- 5
 df <- LoadCSV(dataset,FALSE,"CoreEng")
@@ -181,15 +181,15 @@ if(dataset == 1){
   TripAdvisorFeatures$build<- NULL
   TripAdvisorFeatures$built <- NULL
 
-  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$café
+  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$cafÃ©
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
   TripAdvisorFeatures$cafe<- NULL
-  TripAdvisorFeatures$café <- NULL
+  TripAdvisorFeatures$cafÃ© <- NULL
 
-  TripAdvisorFeatures$durerX <- TripAdvisorFeatures$durer + TripAdvisorFeatures$dürer
+  TripAdvisorFeatures$durerX <- TripAdvisorFeatures$durer + TripAdvisorFeatures$dÃ¼rer
   TripAdvisorFeatures$durerX <- ifelse(TripAdvisorFeatures$durerX > 1, 1, TripAdvisorFeatures$durerX)
   TripAdvisorFeatures$durer<- NULL
-  TripAdvisorFeatures$dürer <- NULL
+  TripAdvisorFeatures$dÃ¼rer <- NULL
 
   TripAdvisorFeatures$earliX <- TripAdvisorFeatures$earli + TripAdvisorFeatures$earlier
   TripAdvisorFeatures$earliX <- ifelse(TripAdvisorFeatures$earliX > 1, 1, TripAdvisorFeatures$earliX)
@@ -286,11 +286,11 @@ if(dataset == 1){
 } else if(dataset == 2){
   # Tyssen-Bornemisza
 
-  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$café +
+  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$cafÃ© +
     TripAdvisorFeatures$cafeteria
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
   TripAdvisorFeatures$cafe<- NULL
-  TripAdvisorFeatures$café <- NULL
+  TripAdvisorFeatures$cafÃ© <- NULL
   TripAdvisorFeatures$cafeteria <- NULL
 
   TripAdvisorFeatures$easiX <- TripAdvisorFeatures$easi + TripAdvisorFeatures$easili +
@@ -386,10 +386,10 @@ if(dataset == 1){
   TripAdvisorFeatures$carravaggio <- NULL
   TripAdvisorFeatures$carravagio <- NULL
 
-  TripAdvisorFeatures$cezannX <- TripAdvisorFeatures$cezann + TripAdvisorFeatures$cézann
+  TripAdvisorFeatures$cezannX <- TripAdvisorFeatures$cezann + TripAdvisorFeatures$cÃ©zann
   TripAdvisorFeatures$cezannX <- ifelse(TripAdvisorFeatures$cezannX > 1, 1, TripAdvisorFeatures$cezannX)
   TripAdvisorFeatures$cezann<- NULL
-  TripAdvisorFeatures$cézann <- NULL
+  TripAdvisorFeatures$cÃ©zann <- NULL
 
   TripAdvisorFeatures$cheapX <- TripAdvisorFeatures$cheap + TripAdvisorFeatures$cheaper
   TripAdvisorFeatures$cheapX <- ifelse(TripAdvisorFeatures$cheapX > 1, 1, TripAdvisorFeatures$cheapX)
@@ -426,10 +426,10 @@ if(dataset == 1){
   TripAdvisorFeatures$complain<- NULL
   TripAdvisorFeatures$complaint <- NULL
 
-  TripAdvisorFeatures$daliX <- TripAdvisorFeatures$dalí + TripAdvisorFeatures$dali
+  TripAdvisorFeatures$daliX <- TripAdvisorFeatures$dalÃ­ + TripAdvisorFeatures$dali
   TripAdvisorFeatures$daliX <- ifelse(TripAdvisorFeatures$daliX > 1, 1, TripAdvisorFeatures$daliX)
   TripAdvisorFeatures$dali<- NULL
-  TripAdvisorFeatures$dalí <- NULL
+  TripAdvisorFeatures$dalÃ­ <- NULL
 
   TripAdvisorFeatures$deepX <- TripAdvisorFeatures$deepli + TripAdvisorFeatures$deep
   TripAdvisorFeatures$deepX <- ifelse(TripAdvisorFeatures$deepX > 1, 1, TripAdvisorFeatures$deepX)
@@ -495,7 +495,7 @@ if(dataset == 1){
 
 } else if(dataset == 3){
   
-  # Reina Sofía
+  # Reina SofÃ­a
   TripAdvisorFeatures$actX <- TripAdvisorFeatures$act + TripAdvisorFeatures$action
   TripAdvisorFeatures$actX <- ifelse(TripAdvisorFeatures$actX > 1, 1, TripAdvisorFeatures$actX)
   TripAdvisorFeatures$act<- NULL
@@ -578,10 +578,10 @@ if(dataset == 1){
   TripAdvisorFeatures$busi<- NULL
   TripAdvisorFeatures$busier <- NULL
 
-  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$café
+  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$cafÃ©
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
   TripAdvisorFeatures$cafe<- NULL
-  TripAdvisorFeatures$café <- NULL
+  TripAdvisorFeatures$cafÃ© <- NULL
 
   TripAdvisorFeatures$centerX <- TripAdvisorFeatures$centerpiec + TripAdvisorFeatures$center +
     TripAdvisorFeatures$centr
@@ -642,12 +642,12 @@ if(dataset == 1){
   TripAdvisorFeatures$court<- NULL
   TripAdvisorFeatures$courtyard <- NULL
 
-  TripAdvisorFeatures$daliX <- TripAdvisorFeatures$dali + TripAdvisorFeatures$dalí +
-    TripAdvisorFeatures$dalì
+  TripAdvisorFeatures$daliX <- TripAdvisorFeatures$dali + TripAdvisorFeatures$dalÃ­ +
+    TripAdvisorFeatures$dalÃ¬
   TripAdvisorFeatures$daliX <- ifelse(TripAdvisorFeatures$daliX > 1, 1, TripAdvisorFeatures$daliX)
   TripAdvisorFeatures$dali<- NULL
-  TripAdvisorFeatures$dalí <- NULL
-  TripAdvisorFeatures$dalì <- NULL
+  TripAdvisorFeatures$dalÃ­ <- NULL
+  TripAdvisorFeatures$dalÃ¬ <- NULL
 
   TripAdvisorFeatures$deepX <- TripAdvisorFeatures$deep + TripAdvisorFeatures$deeper +
     TripAdvisorFeatures$deepli
@@ -729,7 +729,7 @@ if(dataset == 1){
   TripAdvisorFeatures$worst <- NULL
 
 } else if(dataset == 4){
-  # Theater-Museum Dalí
+  # Theater-Museum DalÃ­
 
   TripAdvisorFeatures$addX <- TripAdvisorFeatures$add + TripAdvisorFeatures$addit
   TripAdvisorFeatures$addX <- ifelse(TripAdvisorFeatures$addX > 1, 1, TripAdvisorFeatures$addX)
@@ -748,10 +748,10 @@ if(dataset == 1){
   TripAdvisorFeatures$creation<- NULL
   TripAdvisorFeatures$creativ <- NULL
 
-  TripAdvisorFeatures$daliX <- TripAdvisorFeatures$dali + TripAdvisorFeatures$dalí
+  TripAdvisorFeatures$daliX <- TripAdvisorFeatures$dali + TripAdvisorFeatures$dalÃ­
   TripAdvisorFeatures$daliX <- ifelse(TripAdvisorFeatures$daliX > 1, 1, TripAdvisorFeatures$daliX)
   TripAdvisorFeatures$dali<- NULL
-  TripAdvisorFeatures$dalí <- NULL
+  TripAdvisorFeatures$dalÃ­ <- NULL
 
   TripAdvisorFeatures$easiX <- TripAdvisorFeatures$easi + TripAdvisorFeatures$easili
   TripAdvisorFeatures$easiX <- ifelse(TripAdvisorFeatures$easiX > 1, 1, TripAdvisorFeatures$easiX)
@@ -901,11 +901,11 @@ if(dataset == 1){
   TripAdvisorFeatures$busi<- NULL
   TripAdvisorFeatures$busier <- NULL
   
-  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$café +
+  TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$cafÃ© +
     TripAdvisorFeatures$cafeteria + TripAdvisorFeatures$coffe 
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
   TripAdvisorFeatures$cafe<- NULL
-  TripAdvisorFeatures$café <- NULL
+  TripAdvisorFeatures$cafÃ© <- NULL
   TripAdvisorFeatures$cafeteria <- NULL
   TripAdvisorFeatures$coffe <- NULL
   
