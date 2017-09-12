@@ -1,8 +1,14 @@
 #------------------------------------------------------------------------------#
 #
+<<<<<<< HEAD:BFSM.R
 # Author: Jesús Sánchez de Castro
 # Impired by: Ana Valdivia
 # Date: September 2017
+=======
+# Original Author: Ana Valdivia
+# Author: JesÃºs SÃ¡nchez de Castro
+# Date: August 2017
+>>>>>>> bdd421af8f1440c5140042b6489f6ea5fd189a95:bfsm.R
 #
 #                       BIGRAM FEATURE SELECTION METHOD 
 #
