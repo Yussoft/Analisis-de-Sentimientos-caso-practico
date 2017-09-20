@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------#
 #
-# Author: Jesús Sánchez de Castro
+# Author: JesÃºs SÃ¡nchez de Castro
 # Impired by: Ana Valdivia
 # Date: September 2017
 #
@@ -13,11 +13,11 @@ source("utils.R")
 source("feature_extraction.R")
 
 # MUSEUMS:
-# Nº1 : Prado Museum: 1230 pages
-# Nº2 : Tyssen Museum: 380 pages
-# Nº3 : Reina sofia : 340 pages
-# Nº4 : Dali: 140 pages
-# Nº5 : Guggenheim: 400 pages
+# NÂº1 : Prado Museum: 1230 pages
+# NÂº2 : Tyssen Museum: 380 pages
+# NÂº3 : Reina sofia : 340 pages
+# NÂº4 : Dali: 140 pages
+# NÂº5 : Guggenheim: 400 pages
 
 
 dataset <- 5
@@ -287,7 +287,6 @@ if(dataset == 1){
 } else if(dataset == 2){
   # Tyssen-Bornemisza
 
-
   TripAdvisorFeatures$cafeX <- TripAdvisorFeatures$cafe + TripAdvisorFeatures$café +
     TripAdvisorFeatures$cafeteria
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
@@ -387,11 +386,6 @@ if(dataset == 1){
   TripAdvisorFeatures$caravaggio<- NULL
   TripAdvisorFeatures$carravaggio <- NULL
   TripAdvisorFeatures$carravagio <- NULL
-
-  TripAdvisorFeatures$cezannX <- TripAdvisorFeatures$cezann 
-  TripAdvisorFeatures$cezannX <- ifelse(TripAdvisorFeatures$cezannX > 1, 1, TripAdvisorFeatures$cezannX)
-  TripAdvisorFeatures$cezann<- NULL
-  
 
   TripAdvisorFeatures$cheapX <- TripAdvisorFeatures$cheap + TripAdvisorFeatures$cheaper
   TripAdvisorFeatures$cheapX <- ifelse(TripAdvisorFeatures$cheapX > 1, 1, TripAdvisorFeatures$cheapX)
@@ -649,6 +643,7 @@ if(dataset == 1){
   TripAdvisorFeatures$dali<- NULL
   TripAdvisorFeatures$dalí <- NULL
 
+
   TripAdvisorFeatures$deepX <- TripAdvisorFeatures$deep + TripAdvisorFeatures$deeper +
     TripAdvisorFeatures$deepli
   TripAdvisorFeatures$deepX <- ifelse(TripAdvisorFeatures$deepX > 1, 1, TripAdvisorFeatures$deepX)
@@ -730,7 +725,8 @@ if(dataset == 1){
 
 } else if(dataset == 4){
 
-  # Theater-Museum Dalí
+  # Theater-Museum Dali
+
   TripAdvisorFeatures$addX <- TripAdvisorFeatures$add + TripAdvisorFeatures$addit
   TripAdvisorFeatures$addX <- ifelse(TripAdvisorFeatures$addX > 1, 1, TripAdvisorFeatures$addX)
   TripAdvisorFeatures$add<- NULL
@@ -915,7 +911,7 @@ if(dataset == 1){
     TripAdvisorFeatures$cafeteria
   TripAdvisorFeatures$cafeX <- ifelse(TripAdvisorFeatures$cafeX > 1, 1, TripAdvisorFeatures$cafeX)
   TripAdvisorFeatures$cafe<- NULL
-  TripAdvisorFeatures$café <- NULL
+  TripAdvisorFeatures$café<- NULL
   TripAdvisorFeatures$cafeteria <- NULL
   TripAdvisorFeatures$coffe <- NULL
   
