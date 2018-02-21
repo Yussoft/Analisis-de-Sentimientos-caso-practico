@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------#
 #
-# Author: Jesús Sánchez de Castro
-# Impired by: Ana Valdivia
+# Author: JesÃºs SÃ¡nchez de Castro
+# Inspired by: Ana Valdivia
 # Date: September 2017
 #
 #                       WEB SCRAPING: TRIPADVISOR DATASETS
@@ -86,14 +86,14 @@ TripAdvisor <- data.frame()# Data frame containing the result
 # from a TripAdvisor web page in english.
 
 # MUSEUMS:
-# Nº1 : Prado Museum: 1230 pages
-# Nº2 : Tyssen Museum: 380 pages
-# Nº3 : Reina sofia : 340 pages
-# Nº4 : Dali: 140 pages
-# Nº5 : Guggenheim: 400 pages
+# NÂº1 : Prado Museum: 1230 pages
+# NÂº2 : Tyssen Museum: 380 pages
+# NÂº3 : Reina sofia : 340 pages
+# NÂº4 : Dali: 140 pages
+# NÂº5 : Guggenheim: 400 pages
 
 totalpages <- list(1230,380,340,340,400) # Number of pages, 10 reviews per page
-dataset <- 5 # Dataset number (see above). 4 is Dalí's Theater-Museum
+dataset <- 5 # Dataset number (see above). 4 is DalÃ­'s Theater-Museum
 
 ds.name <- getDatasetName(dataset) # Name of the dataset used to build the path
 
@@ -143,7 +143,7 @@ for(k in 1:totalpages[[dataset]]){
      } else {
        url <- paste0("https://www.tripadvisor.co.uk/Attraction_Review-g187514-d190152-Reviews-or",k-1,"0-Queen_Sofia_Arts_Center_Museo_Nacional_Centro_de_Arte_Reina_Sofia-Madrid.html")
      }
-  # If the desired data.frame is Theatre-museum Dalí, Gerona
+  # If the desired data.frame is Theatre-museum DalÃ­, Gerona
   } else if(dataset == 4){
     print("Downloading theater-museum Dali.")
     
